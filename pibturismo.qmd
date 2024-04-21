@@ -1,21 +1,17 @@
 ---
 title: "PIB do turismo no Brasil: estimativas pelo método do quociente de participação do turismo"
-author: "Glauber Eduardo de Oliveira Santos"
+author: "[Glauber Eduardo de Oliveira Santos](https://linkfly.to/glaubersantos)"
 format: html
 editor: visual
 ---
 
-## PIB do turismo no Brasil: estimativas pelo método do quociente de participação do turismo
+[Material complementar do artigo publicado na Revista Turismo em Análise]{.smallcaps}
 
-###### Glauber Eduardo de Oliveira Santos
+[DOI]{.smallcaps}
 
-###### Junho de 2024
+[Junho de 2024]{.smallcaps}
 
-###### Material complementar do artigo publicado na Revista Turismo em Análise
-
-###### DOI
-
-O objetivo deste estudo é estimar as dimensões econômicas do turismo no Brasil. O trabalho se apoiou sobretudo em dados da Pesquisa de Orçamentos Familiares 2017-2018 do IBGE e adotou uma estratégia de estimação baseada no cômputo de Quocientes de Participação do Turismo (QPT), que correspondem à participação das despesas relacionadas às viagens turísticas no total de despesas das famílias com cada categoria de produtos. Esses quocientes foram aplicados sobre os dados do Sistema de Contas Nacionais, assegurando a compatibilidade das estimativas com a contabilidade nacional oficial.
+O objetivo deste estudo é estimar as dimensões econômicas do turismo no Brasil. O trabalho se apoiou sobretudo em dados da [Pesquisa de Orçamentos Familiares 2017-2018 do IBGE](https://www.ibge.gov.br/estatisticas/sociais/populacao/24786-pesquisa-de-orcamentos-familiares-2.html) e adotou uma estratégia de estimação baseada no cômputo de Quocientes de Participação do Turismo (QPT), que correspondem à participação das despesas relacionadas às viagens turísticas no total de despesas das famílias com cada categoria de produtos. Esses quocientes foram aplicados sobre os dados do [Sistema de Contas Nacionais do IBGE](https://www.ibge.gov.br/estatisticas/economicas/industria/9052-sistema-de-contas-nacionais-brasil.html), assegurando a compatibilidade das estimativas com a contabilidade nacional oficial.
 
 Este projeto trata dados de diferentes fontes, incluindo duas bases de dados relativamente grandes (POF e RAIS). Desta forma, o processamento de algumas partes do código pode ser um pouco demorado, a depender da capacidade do computador utilizado. O projeto contém 2 pastas:
 
@@ -41,6 +37,8 @@ Neste projeto, são utilizadas as seguintes bibliotecas:
 
 7.  janitor: adicionar totais às tabelas finais
 
+8.  knitr: formatação de tabelas
+
 Se necessário instalar alguma das bases, rodar a linha correspondente do chunk a seguir.
 
 ```{r}
@@ -51,6 +49,7 @@ Se necessário instalar alguma das bases, rodar a linha correspondente do chunk 
 #install.packages("readxl")
 #install.packages("scales")
 #install.packages("janitor")
+#install.packages("knitr")
 ```
 
 Em seguida, carregar as bibliotecas
@@ -64,12 +63,14 @@ library(utils)
 library(archive)
 library(scales)
 library(janitor)
+library(knitr)
 ```
 
-Criar a pasta dados-brutos para receber os arquivos a serem baixados e descomprimidos. Como esses arquivos são grandes e públicos, eles não são disponibilizados no repositório. Ao invés disso, a programação cria a pasta e baixa os arquivos dos repositórios institucionais na internet.
+Criar a pasta dados-brutos para receber os arquivos a serem baixados e descomprimidos. Como esses arquivos são grandes e públicos, eles não são disponibilizados no repositório. Ao invés disso, a programação cria a pasta e baixa os arquivos dos repositórios institucionais na internet. Vamos também inibir a apresentação de números em formato científico.
 
 ```{r}
 dir.create("dados-brutos")
+options(scipen=999)
 ```
 
 # Download e descompressão inicial de dados
@@ -99,6 +100,7 @@ unzip("dados-brutos/pof.zip", "DESPESA_INDIVIDUAL.txt", exdir = "dados-brutos")
 Importamos também os microdados de estabelecimentos da RAIS 2018.
 
 ```{r}
+#| output: false
 url <- "ftp://ftp.mtps.gov.br/pdet/microdados/RAIS/2018/RAIS_ESTAB_PUB.7z"
 
 download.file(url, "dados-brutos/rais.7z", mode="wb")
@@ -114,96 +116,13 @@ download.file(url, "dados-brutos/pas.zip")
 unzip("dados-brutos/pas.zip", "Tabela 26.xlsx", exdir = "dados-brutos")
 ```
 
-## POF 2017-2018
+# Importação de dados
 
-Download e descompressão dos microdados da Pesquisa de Orçamentos Familiares 2017-2018.
+Uma vez disponíveis, os arquivos de dados são importados para o ambiente de trabalho do R. Os dados relevantes são salvos como objetos para processamento.
 
-```{r}
-url <- "https://ftp.ibge.gov.br/Orcamentos_Familiares/Pesquisa_de_Orcamentos_Familiares_2017_2018/Microdados/Dados_20230713.zip"
+## Pesquisa de Orçamentos Familiares
 
-download.file(url, "data-raw/pof.zip")
-unzip("data-raw/pof.zip", "DESPESA_INDIVIDUAL.txt", exdir = "data-raw")
-```
-
-Leitura do arquivo descomprimido da POF. A execução do comando de leitura do arquivo (read.fwf) é demorada, podendo durar vários minutos em alguns computadores. Desta forma, o resultado desse processo de descompressão será salvo no formato RDS para facilitar novas tentativas de rodar o restante do código.
-
-```{r}
-C.POF <- read.fwf("data-raw/DESPESA_INDIVIDUAL.txt",
-                  widths = c(2,4,1,9,2,1,2,2,2,7,2,10,2,2,1,1,1,12,10,1,2,14,14,10),
-                  na.strings=c(" "),
-                  col.names = c("UF", "ESTRATO_POF", "TIPO_SITUACAO_REG", 
-                                "COD_UPA", "NUM_DOM", "NUM_UC", "COD_INFORMANTE", 
-                                "QUADRO", "SEQ", "V9001", "V9002", "V8000", "V9010",                                 "V9011", "V9012", "V4104", "V4105", "DEFLATOR", 
-                                "V8000_DEFLA", "COD_IMPUT_VALOR", 
-                                "FATOR_ANUALIZACAO", "PESO", "PESO_FINAL",
-                                "RENDA_TOTAL"),
-                  dec=".")
-head(C.POF)
-saveRDS(C.POF, "rds/POF.rds")
-```
-
-## Tabela de Recursos e Usos
-
-Download e descompressão da Tabela de Recursos e Usos de 2018 do IBGE.
-
-```{r}
-url <- "https://ftp.ibge.gov.br/Contas_Nacionais/Sistema_de_Contas_Nacionais/2021/tabelas_xls/tabelas_de_recursos_e_usos/nivel_68_2010_2021_xls.zip"
-
-download.file(url, "data-raw/tru.zip")
-unzip("data-raw/tru.zip", "68_tab2_2018.xls", exdir = "data-raw")
-```
-
-Importação dos dados de consumo intermediário da TRU2.
-
-```{r}
-CI.TRU2 <- read_xls("data-raw/68_tab2_2018.xls", sheet = "CI",
-                    skip = 3, .name_repair = "unique_quiet")
-CI.ij <- CI.TRU2[2:129, 3:70]
-CI.j <- CI.TRU2[131, 3:70]
-CI.i <- CI.TRU2[2:129, 71]
-CI <- CI.TRU2[131, 71]
-rm(CI.TRU2)
-```
-
-Importação dos dados de demmanda final da TRU2.
-
-```{r}
-DF.TRU2 <- read_xls("data-raw/68_tab2_2018.xls", sheet = "demanda",
-                    skip = 3, .name_repair = "unique_quiet")
-C.i <- DF.TRU2[2:129, 6]
-X.i <- DF.TRU2[2:129, 3]
-C <- DF.TRU2[131, 6]
-X <- DF.TRU2[131, 3]
-DF <- DF.TRU2[131, 9]
-rm(DF.TRU2)
-```
-
-## RAIS
-
-Download e descompressão dos microdados de estabelecimentos da RAIS 2018.
-
-```{r}
-url <- "ftp://ftp.mtps.gov.br/pdet/microdados/RAIS/2018/RAIS_ESTAB_PUB.7z"
-
-download.file(url, "data-raw/rais.7z", mode="wb")
-archive_extract("data-raw/rais.7z", dir="data-raw/")
-rais <- fread("data-raw/RAIS_ESTAB_PUB.txt")
-```
-
-Cômputo da participação dos vínculos em hotéis (CNAE 55108) no total de vínculos dos estabelecimentos de alojamento (inclui o CNAE 55906).
-
-```{r}
-rais <- rais[(`CNAE 2.0 Classe`==55108 | `CNAE 2.0 Classe`==55906), c(8, 18)]
-names(rais) <- c("vinculos", "cnae")
-rais <- rais[, .(sum(vinculos)), by=.(cnae)]
-participacao.hoteis.alojamento <- rais[cnae==5510801, V1]/colSums(rais)[2]
-rm(rais)
-gc()
-```
-
-# Leitura dos dados da POF
-
-Antes de ser importado para o ambiente de trabalho, o arquivo de texto com os microdados da POF 2017-2018 precisa ser lido e transformado para um formato de base de dados. Esse procedimento demanda um processamento maior do que outras partes deste código e pode demorar vários minutos, a depender do computador utilizado. Para facilitar, o resultado da leitura é salvo no formato RDS (nativo do R) para utilização posterior.
+A importação dos microdados da POF 2017-2018 demanda um processamento maior do que outras partes deste código e pode demorar vários minutos, a depender do computador utilizado.
 
 ```{r}
 C.POF <- read.fwf("dados-brutos/DESPESA_INDIVIDUAL.txt",
@@ -216,15 +135,8 @@ C.POF <- read.fwf("dados-brutos/DESPESA_INDIVIDUAL.txt",
                                 "FATOR_ANUALIZACAO", "PESO", "PESO_FINAL", 
                                 "RENDA_TOTAL"),
                   dec=".")
-head(C.POF)
-saveRDS(C.POF, "dados-brutos/POF.rds")
-rm(C.POF)
-gc()
+kable(head(C.POF))
 ```
-
-# Importação de dados
-
-Uma vez disponíveis, os arquivos de dados são importados para o ambiente de trabalho do R. Os dados relevantes são salvos como objetos para processamento.
 
 ## Tabela de Recursos e Usos
 
@@ -240,7 +152,9 @@ A.nomes <- str_sub(names(VP.TRU1)[3:70], 6)
 VP.i <- VP.TRU1[2:129, 71][[1]]
 VP.j <- as.vector(t(VP.TRU1[131, 3:70]))
 VP <- VP.TRU1[131, 71][[1]]
+
 rm(VP.TRU1)
+print(paste("VP =", VP))
 ```
 
 Os nomes de alguns produtos e atividades econômicas relevantes para o turismo são redefinidos por simplicidade e para indicar com mais clareza os elementos específicos de cada categoria. Por exemplo, a categoria de produtos "Atividades de televisão, rádio, cinema e gravação/edição de som e imagem" envolve uma série de produtos, dos quais apenas o cinema consta na lista de serviços consumidos regularmente por turistas na POF 2017-2018. Sendo assim, a categoria é renomeada como "Cinema".
@@ -258,15 +172,16 @@ A.nomes <- recode(A.nomes,
                   "Atividades artísticas, criativas e de espetáculos"="Artes, cultura, esporte e recreação")
 
 P.nomes <- recode(P.nomes,
-                  "Refino de petróleo e coquerias"="Combustível veicular",
-                  "Armazenamento, atividades auxiliares dos transportes e correio"="Estacionamentos e pedágios",
-                  "Alojamento"="Hotéis e similares",
-                  "Alimentação"="Serviços de alimentação",
-                  "Atividades de televisão, rádio, cinema e  gravação/edição de som e imagem"="Cinema",
-                  "Atividades imobiliárias"="Aluguel de imóveis",
-                  "Aluguéis não-imobiliários e gestão de ativos de propriedade intelectual"="Aluguel de veículos",
-                  "Outras atividades administrativas e serviços complementares"="Agenciamento de viagens",
-                  "Atividades artísticas, criativas e de espetáculos"="Artes, cultura, esporte e recreação")
+                  "Gasoálcool"="Combustível veicular",
+                  "Transporte terrestre de passageiros"="Transporte terrestre",
+                  "Armazenamento e serviços auxiliares aos transportes"="Estacionamentos e pedágios",
+                  "Serviços de alojamento em hotéis e similares"="Hotéis e similares",
+                  "Serviços  de alimentação"="Serviços de alimentação",
+                  "Serviços cinematográficos, música, rádio e televisão"="Cinema",
+                  "Aluguel efetivo e serviços imobiliários"="Aluguel de imóveis",
+                  "Aluguéis não-imob. e gestão de ativos de propriedade intelectual"="Aluguel de veículos",
+                  "Outros serviços administrativos"="Agenciamento de viagens",
+                  "Serviços de artes, cultura, esporte e recreação"="Artes, cultura, esporte e recreação")
 ```
 
 Da TRU1, também é importada a tabela de importações, da qual é extraída a variável de mesmo nome. As importações são detalhadas por produto (M.i).
@@ -276,7 +191,9 @@ M.TRU1 <- read_xls("dados-brutos/68_tab1_2018.xls", sheet = "importacao",
                    skip = 3, .name_repair = "unique_quiet")
 M.i <- as.vector(t(M.TRU1[2:129, 3]))
 M <- M.TRU1[131, 3][[1]]
+
 rm(M.TRU1)
+print(paste("M =", M))
 ```
 
 Em seguida, da TRU1 é importada a tabela de oferta, sendo salvo o valor total dos impostos sobre produtos (IP), bem como os vetores, por produto, da demanda total (DT.i), margem do comércio (MGC.i), margem do transporte (MGT.i). Dessa tabela são obtidos também os valores específicos dos principais impostos sobre os produtos (IP.ik).
@@ -284,12 +201,14 @@ Em seguida, da TRU1 é importada a tabela de oferta, sendo salvo o valor total d
 ```{r}
 O.TRU1 <- read_xls("dados-brutos/68_tab1_2018.xls", sheet = "oferta",
                    skip = 3, .name_repair = "unique_quiet")
-IP <- O.TRU1[131, 10][[1]]
 DT.i <- O.TRU1[2:129, 3][[1]]
 MGC.i <- O.TRU1[2:129, 4][[1]]
 MGT.i <- O.TRU1[2:129, 5][[1]]
 IP.ik <- as.matrix(O.TRU1[2:129, 6:9])
+IP <- O.TRU1[131, 10][[1]]
+
 rm(O.TRU1)
+print(paste("IP =", IP))
 ```
 
 A tabela de consumo intermediário é importada da TRU2. Dessa tabela é salva a matriz do consumo intermediário por produto e atividade econômica (Ci.ij), bem como os totais por produto (CI.i) e por atividade (CI.j), além do consumo intermediário total (CI).
@@ -301,7 +220,9 @@ CI.ij <- data.matrix(CI.TRU2[2:129, 3:70])
 CI.i <- CI.TRU2[2:129, 71][[1]]
 CI.j <- as.vector(t(CI.TRU2[131, 3:70]))
 CI <- CI.TRU2[131, 71][[1]]
+
 rm(CI.TRU2)
+print(paste("CI =", CI))
 ```
 
 Da TRU2 também é utilizada a tabela de demanda, da qual são obtidos os dados do consumo das famílias por atividade (C.i) e total (C), das exportações por atividade (X.i) e total (X), bem como a demanda final total (DF).
@@ -314,7 +235,11 @@ C <- DF.TRU2[131, 6][[1]]
 X.i <- (DF.TRU2[2:129, 3])[[1]]
 X <- DF.TRU2[131, 3][[1]]
 DF <- DF.TRU2[131, 9][[1]]
+
 rm(DF.TRU2)
+print(paste("C =", C))
+print(paste("X =", X))
+print(paste("DF =", DF))
 ```
 
 Da TRU3, é importada a tabela do valor agregado. Desta é obtidas a matriz de componentes do valor agregado por atividade econômica (VAB.jm), bem como o valor agregado total por atividade (VAB.j) e o valor agregado total da economia (VAB). A última linha da matriz de componentes traz o número de empregos. Essa informação é transformada de unidades para milhares neste chunk para melhor apresentação dos resultados.
@@ -327,7 +252,9 @@ VAB.jm <- data.matrix(VAB.TRU3[2:15, 2:69])
 VAB.jm[14,] <- VAB.jm[14,]/1000 # empregos em milhares
 VAB.j <- as.vector(t(VAB.TRU3[2, 2:69]))
 VAB <- VAB.TRU3[2, 70][[1]]
+
 rm(VAB.TRU3)
+print(paste("VAB =", VAB))
 ```
 
 ## Pesquisa Anual de Serviços
@@ -341,7 +268,9 @@ pas26 <- data.table(pas26)
 pas26 <- pas26[, c(1,8)]
 names(pas26) <- c("variavel", "valor")
 D.agencias <- pas26[variavel=="1 - Receita operacional líquida", valor]/1000
+
 rm(pas26)
+print(paste("D.agencias =", D.agencias))
 ```
 
 ## Dados originais da pesquisa
@@ -350,7 +279,7 @@ Diferentes métodos de estimação da demanda turística são utilizados neste p
 
 ```{r}
 tipo.estimacao <- fread("dados-originais/tipo.estimacao.csv")
-tipo.estimacao
+kable(tipo.estimacao)
 ```
 
 As despesas turísticas foram registradas na POF em categorias de produtos especialmente desenhadas para aquela pesquisa. Uma vez que o tradutor oficial de códigos da POF 2017-2018 para o SCN ainda não havia sido divulgado pelo IBGE, esse processo de classificação partiu do [tradutor POF-SCN elaborado pelo IBGE para a POF 2009](https://ftp.ibge.gov.br/Contas_Nacionais/Sistema_de_Contas_Nacionais/Tradutores/Tradutor_POF2009_ContasNacionais.xls). Os produtos da POF 2017-2018 que não constavam na POF 2009, seja por serem novos ou por terem sido especificados de forma mais detalhada, foram classificados a partir do [tradutor de categorias da CNAE 2.0 para o SCN](https://ftp.ibge.gov.br/Contas_Nacionais/Sistema_de_Contas_Nacionais/Tradutores/Tradutor_Atividade_CNAE.xls). No tradutor elaborado, duas categorias de despesas turísticas da POF não foram associadas a nenhuma categoria do SCN: agregado (conjunto indivisível de produtos) e taxa alfandegária.
@@ -358,7 +287,7 @@ As despesas turísticas foram registradas na POF em categorias de produtos espec
 ```{r}
 tradutor.PT.i <- fread("dados-originais/tradutor.PT.i.csv", encoding = "UTF-8")
 tradutor.PT.i <- tradutor.PT.i[!is.na(tru.cod)]
-tradutor.PT.i
+kable(head(tradutor.PT.i))
 ```
 
 Por fim, o terceiro e último arquivo com dados originais desta pesquisa traz duas informações pontuais: a participação das famílias na demanda total das empresas de agenciamento de viagens no Brasil (FENACTUR) e a participação do transporte de passageiros na receita total das companhias aéreas no país (ANAC).
@@ -380,6 +309,7 @@ rm(dados.pontuais)
 Nesta seção, são tabuladas as informações da POF a fim de computar os Quocientes de Participação do Turismo (QPTs). O processo começa com a elaboração de uma informação específica oriunda dos microdados da RAIS: a proporção de empregados em hotéis no total de empregados em serviços de alojamento.
 
 ```{r}
+#| output: false
 rais <- 
   fread("dados-brutos/RAIS_ESTAB_PUB.txt", encoding = "Latin-1",
         select = c("CNAE 2.0 Classe", "Qtd Vínculos Ativos", "CNAE 2.0 Subclasse"))
@@ -391,15 +321,14 @@ rais <- rais[, .(vinculos=sum(vinculos)), by=.(cnaesub)]
 participacao.hoteis.alojamento <- 
   rais[cnaesub==5510801, vinculos]/sum(rais$vinculos)
 
-participacao.hoteis.alojamento
 rm(rais)
-gc()
+print(paste("participacao.hoteis.alojamento =", 
+            percent(participacao.hoteis.alojamento, accuracy=0.01)))
 ```
 
 Em seguida, o banco de dados da POF é carregado e tratado. Os itens de despesa das famílias são classificados segundo os códigos do SCN a partir do uso do tradutor discutido anteriormente. As despesas em produtos não consumidos por turistas são eliminadas do banco. As despesas nas categorias remanescentes são classificadas em turísticas (realizadas durante ou em razão de viagens turísticas, sendo registradas no Quadro 41 da POF, aqui assinaladas por "CT.i.POF") e não turísticas (não realizadas durante ou em razão de viagens turísticas, sendo registradas em outros quadros da POF, aqui assinaladas por "CR.i.POF". Por fim, o valor das despesas registradas é multiplicado pelo peso amostral da POF para que os resultados sejam representativos de toda a população brasileira.
 
 ```{r}
-C.POF <- readRDS("dados-brutos/POF.rds")
 C.POF <- data.table(C.POF)
 C.POF <- left_join(C.POF, tradutor.PT.i[, .(V9001, tru.cod)], by = "V9001")
 C.POF <- C.POF[(!is.na(tru.cod))]
@@ -413,6 +342,8 @@ As despesas das famílias registradas pela POF são agregadas por código do SCN
 CT.i.POF <- C.POF[, .(C=sum(valor.peso)/1000000), by = .(tru.cod, turismo)]
 CT.i.POF <- dcast(CT.i.POF, tru.cod ~ turismo, value.var = "C")
 CT.i.POF[is.na(CR.i.POF)]$CR.i.POF <- 0
+
+kable(CT.i.POF)
 ```
 
 Os dados da POF são ainda utilizados para calcular a proporção das despesas turísticas com alimentação em relação às despesas com alojamento. Essa proporção será utilizada para estimar o consumo intermediário turístico com serviços de alimentação.
@@ -426,6 +357,9 @@ pof.D.alojalim <-
 
 pof.D.alojalim <- colSums(pof.D.alojalim[`55001`>0, .(`55001`, `56001`)])
 prop.despesa.alim.aloj <- pof.D.alojalim[2] / pof.D.alojalim[1]
+
+print(paste("prop.despesa.alim.aloj =", 
+            percent(prop.despesa.alim.aloj, accuracy=0.01)))
 ```
 
 ## Consumo de serviços de agenciamento de viagens
@@ -504,6 +438,8 @@ distribuicao.intermediacao$distribuicao.intermediacao <-
 distribuicao.intermediacao$distribuicao.intermediacao <- 
   distribuicao.intermediacao$distribuicao.intermediacao * 
   DF.intermediado.agencias.nacional
+
+rm(C.POF)
 ```
 
 O valor estimado dos serviços nacionais de terceiros intermediados pelas agências foi adicionado à despesa explicitamente declarada na POF com cada categoria de produtos turísticos. As despesas com serviços hoteleiros intermediados pelas agências, por exemplo, foram somadas às despesas com serviços hoteleiros não intermediados.
@@ -531,7 +467,7 @@ Os QPT compõem a Tabela 1 do artigo.
 
 ```{r}
 Tabela1 <- data.table(P.nomes, percent(QPT.i, accuracy=1))[QPT.i>0]
-Tabela1
+kable(Tabela1)
 ```
 
 # Estimativas da demanda turística
@@ -645,24 +581,20 @@ Por fim, o PIB direto do turismo (PIBDT) é calculado pelas óticas da oferta e 
 MT <- sum(MT.i, na.rm=T)
 
 PIBDT.Oferta <- DTT - CIPT - MGCT - MGTT - MT 
-PIBDT.Oferta
-
 PIBDT.Producao <- VPT + IPT - CIPT
-PIBDT.Producao
-
-PIBDT.Oferta == PIBDT.Producao
+print(paste("PIBDT =", PIBDT.Oferta, "==", PIBDT.Producao))
 ```
 
 A participação do turismo no consumo das famílias, no valor da produção e no PIB foi calculada.
 
 ```{r}
 CT <- sum(CT.i, na.rm=T)
-CT / C
+print(paste("CT / C =", percent(CT / C, accuracy = 0.01)))
 
-VPT / VP
+print(paste("VPT / VP=", percent(VPT / VP, accuracy = 0.01)))
 
 PIB <- VP - CI + IP
-PIBDT.Oferta / PIB
+print(paste("PIBDT / PIB =", percent(PIBDT.Oferta / PIB, accuracy=0.01)))
 ```
 
 # Tabelas finais
@@ -677,21 +609,24 @@ Tabela2 <- data.table(`Categoria de produtos`=P.nomes,
                       `Consumo intermediário turístico (CIT)`=CIT.i, 
                       `Demanda turística total (DT)`=DTT.i)[!is.na(DTT.i)] %>% 
   adorn_totals("row") %>% format(digits=2, big.mark = ".", decimal.mark = ",")
-Tabela2
+
+kable(Tabela2)
 ```
 
 ## Tabela 3
 
 ```{r}
 Tabela3 <- 
-  data.table(`Categoria de produtos`=P.nomes,
-             `Oferta total (O)`=DT.i,
-             `Oferta turística total (OT)`=DTT.i,
-             `Participação da oferta turística na oferta total (OT/O)`= 
-               DTT.i / DT.i)[`Oferta turística total (OT)`>0] %>%
+  data.table(
+    `Categoria de produtos`=P.nomes,
+    `Oferta total (O)`=DT.i,
+    `Oferta turística total (OT)`=DTT.i,
+    `Participação da oferta turística na oferta total (OT/O)`=
+      percent((DTT.i / DT.i), accuracy=0.1))[`Oferta turística total (OT)`>0] %>%
   adorn_totals("row") %>% 
   format(digits=2, big.mark = ".", decimal.mark = ",")
-Tabela3
+
+kable(Tabela3)
 ```
 
 ## Tabela 4
@@ -712,7 +647,8 @@ Tabela4 <-
         CIPT.j[CIPT.j>0]) %>%
   adorn_totals("row") %>% 
   format(digits=1, big.mark = ".", decimal.mark = ",")
-Tabela4
+
+kable(Tabela4)
 ```
 
 ## Tabela 5
@@ -720,7 +656,8 @@ Tabela4
 ```{r}
 Tabela5 <- data.table(Operação=VAB.nomes, `Valor (R$ milhões)`=VABT.m) %>%
   format(digits=1, big.mark = ".", decimal.mark = ",")
-Tabela5
+
+kable(Tabela5)
 ```
 
 ## Tabela 6
@@ -729,7 +666,8 @@ Tabela5
 Tabela6 <- 
   data.table(`Atividade turística`=A.nomes,
              `Valor Adicionado Bruto Direto do Turismo (VABDT / R$ milhões)`=VABT.j,
-             `Ocupações (milhares)`=VABT.jm[14,]) %>% 
+             `Ocupações (milhares)`=VABT.jm[14,])[`Ocupações (milhares)`>0] %>% 
   format(digits = 1, big.mark = ".", decimal.mark = ",")
-Tabela6
+
+kable(Tabela6)
 ```

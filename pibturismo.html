@@ -1,0 +1,2124 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.353">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Glauber Eduardo de Oliveira Santos">
+
+<title>PIB do turismo no Brasil: estimativas pelo método do quociente de participação do turismo</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="pibturismo_files/libs/clipboard/clipboard.min.js"></script>
+<script src="pibturismo_files/libs/quarto-html/quarto.js"></script>
+<script src="pibturismo_files/libs/quarto-html/popper.min.js"></script>
+<script src="pibturismo_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="pibturismo_files/libs/quarto-html/anchor.min.js"></script>
+<link href="pibturismo_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="pibturismo_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="pibturismo_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="pibturismo_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="pibturismo_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">PIB do turismo no Brasil: estimativas pelo método do quociente de participação do turismo</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p><a href="https://linkfly.to/glaubersantos">Glauber Eduardo de Oliveira Santos</a> </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p><span class="smallcaps">Material complementar do artigo publicado na Revista Turismo em Análise</span></p>
+<p><span class="smallcaps">DOI</span></p>
+<p><span class="smallcaps">Junho de 2024</span></p>
+<p>O objetivo deste estudo é estimar as dimensões econômicas do turismo no Brasil. O trabalho se apoiou sobretudo em dados da <a href="https://www.ibge.gov.br/estatisticas/sociais/populacao/24786-pesquisa-de-orcamentos-familiares-2.html">Pesquisa de Orçamentos Familiares 2017-2018 do IBGE</a> e adotou uma estratégia de estimação baseada no cômputo de Quocientes de Participação do Turismo (QPT), que correspondem à participação das despesas relacionadas às viagens turísticas no total de despesas das famílias com cada categoria de produtos. Esses quocientes foram aplicados sobre os dados do <a href="https://www.ibge.gov.br/estatisticas/economicas/industria/9052-sistema-de-contas-nacionais-brasil.html">Sistema de Contas Nacionais do IBGE</a>, assegurando a compatibilidade das estimativas com a contabilidade nacional oficial.</p>
+<p>Este projeto trata dados de diferentes fontes, incluindo duas bases de dados relativamente grandes (POF e RAIS). Desta forma, o processamento de algumas partes do código pode ser um pouco demorado, a depender da capacidade do computador utilizado. O projeto contém 2 pastas:</p>
+<ol type="1">
+<li><p>dados-originais: dados metodológicos e estatísticos desenvolvidos por este projeto fora do código de programação. Os métodos de criação desses estão detalhados no artigo publicado na RTA.</p></li>
+<li><p>dados-brutos: bases de dados baixadas de diferentes endereços da internet e arquivos descomprimidos. Essa pasta não é disponibilizada no projeto, sendo criada e carregada por meio do código de programação, permitindo plena reprodutivibilidade do projeto.</p></li>
+</ol>
+<section id="configurações-iniciais" class="level1">
+<h1>Configurações iniciais</h1>
+<p>Neste projeto, são utilizadas as seguintes bibliotecas:</p>
+<ol type="1">
+<li><p>tidyverse: várias funções para tratamento de dados</p></li>
+<li><p>data.table: armazenamento e tratamento de dados tabulares</p></li>
+<li><p>utils: importação de dados online</p></li>
+<li><p>archive: descompressão de arquivos</p></li>
+<li><p>readxl: importação de dados de planilhas Excel</p></li>
+<li><p>scales: formatação dos números das tabelas finais</p></li>
+<li><p>janitor: adicionar totais às tabelas finais</p></li>
+<li><p>knitr: formatação de tabelas</p></li>
+</ol>
+<p>Se necessário instalar alguma das bases, rodar a linha correspondente do chunk a seguir.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("tidyverse")</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("data.table")</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("utils")</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("archive")</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("readxl")</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("scales")</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("janitor")</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("knitr")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Em seguida, carregar as bibliotecas</p>
+<p>Criar a pasta dados-brutos para receber os arquivos a serem baixados e descomprimidos. Como esses arquivos são grandes e públicos, eles não são disponibilizados no repositório. Ao invés disso, a programação cria a pasta e baixa os arquivos dos repositórios institucionais na internet. Vamos também inibir a apresentação de números em formato científico.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">"dados-brutos"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in dir.create("dados-brutos"): 'dados-brutos' já existe</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">scipen=</span><span class="dv">999</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="download-e-descompressão-inicial-de-dados" class="level1">
+<h1>Download e descompressão inicial de dados</h1>
+<section id="dados-de-fontes-externas" class="level2">
+<h2 class="anchored" data-anchor-id="dados-de-fontes-externas">Dados de fontes externas</h2>
+<p>Esta seção faz download e descomprime os dados de fontes externas à pesquisa que serão utilizados na elaboração de estimativas. Começamos com a importação e descompressão das Tabela de Recursos e Usos do IBGE referentes a 2018. Essa fonte será a base de referência de estatísticas acerca da economia brasileira.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://ftp.ibge.gov.br/Contas_Nacionais/Sistema_de_Contas_Nacionais/2021/tabelas_xls/tabelas_de_recursos_e_usos/nivel_68_2010_2021_xls.zip"</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(url, <span class="st">"dados-brutos/tru.zip"</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span>(<span class="st">"dados-brutos/tru.zip"</span>, <span class="st">"68_tab1_2018.xls"</span>, <span class="at">exdir =</span> <span class="st">"dados-brutos"</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span>(<span class="st">"dados-brutos/tru.zip"</span>, <span class="st">"68_tab2_2018.xls"</span>, <span class="at">exdir =</span> <span class="st">"dados-brutos"</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span>(<span class="st">"dados-brutos/tru.zip"</span>, <span class="st">"68_tab3_2018.xls"</span>, <span class="at">exdir =</span> <span class="st">"dados-brutos"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Em seguida, importamos e descomprimimos os microdados da Pesquisa de Orçamentos Familiares (POF) 2017-2018 do IBGE. Essa será a principal fonte de dados para diferenciação do consumo turístico e não turístico, servindo de base para o cálculo dos Quocientes de Participação do Turismo (QPT).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://ftp.ibge.gov.br/Orcamentos_Familiares/Pesquisa_de_Orcamentos_Familiares_2017_2018/Microdados/Dados_20230713.zip"</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(url, <span class="st">"dados-brutos/pof.zip"</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span>(<span class="st">"dados-brutos/pof.zip"</span>, <span class="st">"DESPESA_INDIVIDUAL.txt"</span>, <span class="at">exdir =</span> <span class="st">"dados-brutos"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Importamos também os microdados de estabelecimentos da RAIS 2018.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"ftp://ftp.mtps.gov.br/pdet/microdados/RAIS/2018/RAIS_ESTAB_PUB.7z"</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(url, <span class="st">"dados-brutos/rais.7z"</span>, <span class="at">mode=</span><span class="st">"wb"</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">archive_extract</span>(<span class="st">"dados-brutos/rais.7z"</span>, <span class="at">dir=</span><span class="st">"dados-brutos/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Outra fonte de dados é a Pesquisa Anual de Serviços (PAS) do IBGE referente a 2018.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://ftp.ibge.gov.br/Comercio_e_Servicos/Pesquisa_Anual_de_Servicos/pas2018/xls/tabelas_2018_xls_20230529.zip"</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(url, <span class="st">"dados-brutos/pas.zip"</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span>(<span class="st">"dados-brutos/pas.zip"</span>, <span class="st">"Tabela 26.xlsx"</span>, <span class="at">exdir =</span> <span class="st">"dados-brutos"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="importação-de-dados" class="level1">
+<h1>Importação de dados</h1>
+<p>Uma vez disponíveis, os arquivos de dados são importados para o ambiente de trabalho do R. Os dados relevantes são salvos como objetos para processamento.</p>
+<section id="pesquisa-de-orçamentos-familiares" class="level2">
+<h2 class="anchored" data-anchor-id="pesquisa-de-orçamentos-familiares">Pesquisa de Orçamentos Familiares</h2>
+<p>A importação dos microdados da POF 2017-2018 demanda um processamento maior do que outras partes deste código e pode demorar vários minutos, a depender do computador utilizado.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>C.POF <span class="ot">&lt;-</span> <span class="fu">read.fwf</span>(<span class="st">"dados-brutos/DESPESA_INDIVIDUAL.txt"</span>,</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">widths =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">9</span>,<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">7</span>,<span class="dv">2</span>,<span class="dv">10</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">12</span>,<span class="dv">10</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">14</span>,<span class="dv">14</span>,<span class="dv">10</span>),</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">na.strings=</span><span class="fu">c</span>(<span class="st">" "</span>),</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"UF"</span>, <span class="st">"ESTRATO_POF"</span>, <span class="st">"TIPO_SITUACAO_REG"</span>, <span class="st">"COD_UPA"</span>,                                 <span class="st">"NUM_DOM"</span>, <span class="st">"NUM_UC"</span>, <span class="st">"COD_INFORMANTE"</span>, <span class="st">"QUADRO"</span>, </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"SEQ"</span>, <span class="st">"V9001"</span>, <span class="st">"V9002"</span>, <span class="st">"V8000"</span>, <span class="st">"V9010"</span>, <span class="st">"V9011"</span>, </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"V9012"</span>, <span class="st">"V4104"</span>, <span class="st">"V4105"</span>, <span class="st">"DEFLATOR"</span>, </span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"V8000_DEFLA"</span>, <span class="st">"COD_IMPUT_VALOR"</span>, </span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"FATOR_ANUALIZACAO"</span>, <span class="st">"PESO"</span>, <span class="st">"PESO_FINAL"</span>, </span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"RENDA_TOTAL"</span>),</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>                  <span class="at">dec=</span><span class="st">"."</span>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(C.POF))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 1%">
+<col style="width: 5%">
+<col style="width: 8%">
+<col style="width: 4%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 6%">
+<col style="width: 3%">
+<col style="width: 1%">
+<col style="width: 3%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 4%">
+<col style="width: 5%">
+<col style="width: 7%">
+<col style="width: 8%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 5%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">UF</th>
+<th style="text-align: right;">ESTRATO_POF</th>
+<th style="text-align: right;">TIPO_SITUACAO_REG</th>
+<th style="text-align: right;">COD_UPA</th>
+<th style="text-align: right;">NUM_DOM</th>
+<th style="text-align: right;">NUM_UC</th>
+<th style="text-align: right;">COD_INFORMANTE</th>
+<th style="text-align: right;">QUADRO</th>
+<th style="text-align: right;">SEQ</th>
+<th style="text-align: right;">V9001</th>
+<th style="text-align: right;">V9002</th>
+<th style="text-align: right;">V8000</th>
+<th style="text-align: right;">V9010</th>
+<th style="text-align: right;">V9011</th>
+<th style="text-align: right;">V9012</th>
+<th style="text-align: right;">V4104</th>
+<th style="text-align: right;">V4105</th>
+<th style="text-align: right;">DEFLATOR</th>
+<th style="text-align: right;">V8000_DEFLA</th>
+<th style="text-align: right;">COD_IMPUT_VALOR</th>
+<th style="text-align: right;">FATOR_ANUALIZACAO</th>
+<th style="text-align: right;">PESO</th>
+<th style="text-align: right;">PESO_FINAL</th>
+<th style="text-align: right;">RENDA_TOTAL</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">1103</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">110005400</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2200101</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1.000000</td>
+<td style="text-align: right;">7.00</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">272.8067</td>
+<td style="text-align: right;">372.9845</td>
+<td style="text-align: right;">11254.75</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">1103</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">110005400</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">2301401</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1.050646</td>
+<td style="text-align: right;">105.06</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">272.8067</td>
+<td style="text-align: right;">372.9845</td>
+<td style="text-align: right;">11254.75</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">1103</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">110005400</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2400101</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1.013176</td>
+<td style="text-align: right;">25.33</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">272.8067</td>
+<td style="text-align: right;">372.9845</td>
+<td style="text-align: right;">11254.75</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">1103</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">110005400</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2400101</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1.013176</td>
+<td style="text-align: right;">25.33</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">272.8067</td>
+<td style="text-align: right;">372.9845</td>
+<td style="text-align: right;">11254.75</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">1103</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">110005400</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">2401901</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1.021505</td>
+<td style="text-align: right;">6.13</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">272.8067</td>
+<td style="text-align: right;">372.9845</td>
+<td style="text-align: right;">11254.75</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">1103</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">110005400</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">2402801</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1.009240</td>
+<td style="text-align: right;">20.18</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">272.8067</td>
+<td style="text-align: right;">372.9845</td>
+<td style="text-align: right;">11254.75</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="tabela-de-recursos-e-usos" class="level2">
+<h2 class="anchored" data-anchor-id="tabela-de-recursos-e-usos">Tabela de Recursos e Usos</h2>
+<p>Começamos com importação dos dados das TRU. Neste primeiro chunk, é importada a tabela de produção da TRU1. São salvos os códigos dos produtos (P.i), os nomes dos produtos (P.nomes), os códigos (A.j) e nomes das atividades econômicas (A.nomes), bem como o valor da produção dos produtos (VP.i), das atividades (VP.j) e total (VP).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>VP.TRU1 <span class="ot">&lt;-</span> <span class="fu">read_xls</span>(<span class="st">"dados-brutos/68_tab1_2018.xls"</span>, <span class="at">sheet =</span> <span class="st">"producao"</span>,</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">skip =</span> <span class="dv">3</span>, <span class="at">.name_repair =</span> <span class="st">"unique_quiet"</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>P.i <span class="ot">&lt;-</span> VP.TRU1[<span class="dv">2</span><span class="sc">:</span><span class="dv">129</span>, <span class="dv">1</span>][[<span class="dv">1</span>]]</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>P.nomes <span class="ot">&lt;-</span> VP.TRU1[<span class="dv">2</span><span class="sc">:</span><span class="dv">129</span>, <span class="dv">2</span>][[<span class="dv">1</span>]]</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>A.j <span class="ot">&lt;-</span> <span class="fu">str_sub</span>(<span class="fu">names</span>(VP.TRU1)[<span class="dv">3</span><span class="sc">:</span><span class="dv">70</span>], <span class="dv">1</span>, <span class="dv">4</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>A.nomes <span class="ot">&lt;-</span> <span class="fu">str_sub</span>(<span class="fu">names</span>(VP.TRU1)[<span class="dv">3</span><span class="sc">:</span><span class="dv">70</span>], <span class="dv">6</span>)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>VP.i <span class="ot">&lt;-</span> VP.TRU1[<span class="dv">2</span><span class="sc">:</span><span class="dv">129</span>, <span class="dv">71</span>][[<span class="dv">1</span>]]</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>VP.j <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">t</span>(VP.TRU1[<span class="dv">131</span>, <span class="dv">3</span><span class="sc">:</span><span class="dv">70</span>]))</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>VP <span class="ot">&lt;-</span> VP.TRU1[<span class="dv">131</span>, <span class="dv">71</span>][[<span class="dv">1</span>]]</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(VP.TRU1)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"VP ="</span>, VP))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "VP = 12010010"</code></pre>
+</div>
+</div>
+<p>Os nomes de alguns produtos e atividades econômicas relevantes para o turismo são redefinidos por simplicidade e para indicar com mais clareza os elementos específicos de cada categoria. Por exemplo, a categoria de produtos “Atividades de televisão, rádio, cinema e gravação/edição de som e imagem” envolve uma série de produtos, dos quais apenas o cinema consta na lista de serviços consumidos regularmente por turistas na POF 2017-2018. Sendo assim, a categoria é renomeada como “Cinema”.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>A.nomes <span class="ot">&lt;-</span> <span class="fu">recode</span>(A.nomes,</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Refino de petróleo e coquerias"</span><span class="ot">=</span><span class="st">"Combustível veicular"</span>,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Armazenamento, atividades auxiliares dos transportes e correio"</span><span class="ot">=</span><span class="st">"Estacionamentos e pedágios"</span>,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Alojamento"</span><span class="ot">=</span><span class="st">"Hotéis e similares"</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Alimentação"</span><span class="ot">=</span><span class="st">"Serviços de alimentação"</span>,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Atividades de televisão, rádio, cinema e  gravação/edição de som e imagem"</span><span class="ot">=</span><span class="st">"Cinema"</span>,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Atividades imobiliárias"</span><span class="ot">=</span><span class="st">"Aluguel de imóveis"</span>,</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Aluguéis não-imobiliários e gestão de ativos de propriedade intelectual"</span><span class="ot">=</span><span class="st">"Aluguel de veículos"</span>,</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Outras atividades administrativas e serviços complementares"</span><span class="ot">=</span><span class="st">"Agenciamento de viagens"</span>,</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Atividades artísticas, criativas e de espetáculos"</span><span class="ot">=</span><span class="st">"Artes, cultura, esporte e recreação"</span>)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>P.nomes <span class="ot">&lt;-</span> <span class="fu">recode</span>(P.nomes,</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Gasoálcool"</span><span class="ot">=</span><span class="st">"Combustível veicular"</span>,</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Transporte terrestre de passageiros"</span><span class="ot">=</span><span class="st">"Transporte terrestre"</span>,</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Armazenamento e serviços auxiliares aos transportes"</span><span class="ot">=</span><span class="st">"Estacionamentos e pedágios"</span>,</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Serviços de alojamento em hotéis e similares"</span><span class="ot">=</span><span class="st">"Hotéis e similares"</span>,</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Serviços  de alimentação"</span><span class="ot">=</span><span class="st">"Serviços de alimentação"</span>,</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Serviços cinematográficos, música, rádio e televisão"</span><span class="ot">=</span><span class="st">"Cinema"</span>,</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Aluguel efetivo e serviços imobiliários"</span><span class="ot">=</span><span class="st">"Aluguel de imóveis"</span>,</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Aluguéis não-imob. e gestão de ativos de propriedade intelectual"</span><span class="ot">=</span><span class="st">"Aluguel de veículos"</span>,</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Outros serviços administrativos"</span><span class="ot">=</span><span class="st">"Agenciamento de viagens"</span>,</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Serviços de artes, cultura, esporte e recreação"</span><span class="ot">=</span><span class="st">"Artes, cultura, esporte e recreação"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Da TRU1, também é importada a tabela de importações, da qual é extraída a variável de mesmo nome. As importações são detalhadas por produto (M.i).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>M.TRU1 <span class="ot">&lt;-</span> <span class="fu">read_xls</span>(<span class="st">"dados-brutos/68_tab1_2018.xls"</span>, <span class="at">sheet =</span> <span class="st">"importacao"</span>,</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">skip =</span> <span class="dv">3</span>, <span class="at">.name_repair =</span> <span class="st">"unique_quiet"</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>M.i <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">t</span>(M.TRU1[<span class="dv">2</span><span class="sc">:</span><span class="dv">129</span>, <span class="dv">3</span>]))</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>M <span class="ot">&lt;-</span> M.TRU1[<span class="dv">131</span>, <span class="dv">3</span>][[<span class="dv">1</span>]]</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(M.TRU1)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"M ="</span>, M))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "M = 997474"</code></pre>
+</div>
+</div>
+<p>Em seguida, da TRU1 é importada a tabela de oferta, sendo salvo o valor total dos impostos sobre produtos (IP), bem como os vetores, por produto, da demanda total (DT.i), margem do comércio (MGC.i), margem do transporte (MGT.i). Dessa tabela são obtidos também os valores específicos dos principais impostos sobre os produtos (IP.ik).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>O.TRU1 <span class="ot">&lt;-</span> <span class="fu">read_xls</span>(<span class="st">"dados-brutos/68_tab1_2018.xls"</span>, <span class="at">sheet =</span> <span class="st">"oferta"</span>,</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">skip =</span> <span class="dv">3</span>, <span class="at">.name_repair =</span> <span class="st">"unique_quiet"</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>DT.i <span class="ot">&lt;-</span> O.TRU1[<span class="dv">2</span><span class="sc">:</span><span class="dv">129</span>, <span class="dv">3</span>][[<span class="dv">1</span>]]</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>MGC.i <span class="ot">&lt;-</span> O.TRU1[<span class="dv">2</span><span class="sc">:</span><span class="dv">129</span>, <span class="dv">4</span>][[<span class="dv">1</span>]]</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>MGT.i <span class="ot">&lt;-</span> O.TRU1[<span class="dv">2</span><span class="sc">:</span><span class="dv">129</span>, <span class="dv">5</span>][[<span class="dv">1</span>]]</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>IP.ik <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(O.TRU1[<span class="dv">2</span><span class="sc">:</span><span class="dv">129</span>, <span class="dv">6</span><span class="sc">:</span><span class="dv">9</span>])</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>IP <span class="ot">&lt;-</span> O.TRU1[<span class="dv">131</span>, <span class="dv">10</span>][[<span class="dv">1</span>]]</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(O.TRU1)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"IP ="</span>, IP))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "IP = 992991"</code></pre>
+</div>
+</div>
+<p>A tabela de consumo intermediário é importada da TRU2. Dessa tabela é salva a matriz do consumo intermediário por produto e atividade econômica (Ci.ij), bem como os totais por produto (CI.i) e por atividade (CI.j), além do consumo intermediário total (CI).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>CI.TRU2 <span class="ot">&lt;-</span> <span class="fu">read_xls</span>(<span class="st">"dados-brutos/68_tab2_2018.xls"</span>, <span class="at">sheet =</span> <span class="st">"CI"</span>,</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">skip =</span> <span class="dv">3</span>, <span class="at">.name_repair =</span> <span class="st">"unique_quiet"</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>CI.ij <span class="ot">&lt;-</span> <span class="fu">data.matrix</span>(CI.TRU2[<span class="dv">2</span><span class="sc">:</span><span class="dv">129</span>, <span class="dv">3</span><span class="sc">:</span><span class="dv">70</span>])</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>CI.i <span class="ot">&lt;-</span> CI.TRU2[<span class="dv">2</span><span class="sc">:</span><span class="dv">129</span>, <span class="dv">71</span>][[<span class="dv">1</span>]]</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>CI.j <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">t</span>(CI.TRU2[<span class="dv">131</span>, <span class="dv">3</span><span class="sc">:</span><span class="dv">70</span>]))</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>CI <span class="ot">&lt;-</span> CI.TRU2[<span class="dv">131</span>, <span class="dv">71</span>][[<span class="dv">1</span>]]</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(CI.TRU2)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"CI ="</span>, CI))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "CI = 5998860"</code></pre>
+</div>
+</div>
+<p>Da TRU2 também é utilizada a tabela de demanda, da qual são obtidos os dados do consumo das famílias por atividade (C.i) e total (C), das exportações por atividade (X.i) e total (X), bem como a demanda final total (DF).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>DF.TRU2 <span class="ot">&lt;-</span> <span class="fu">read_xls</span>(<span class="st">"dados-brutos/68_tab2_2018.xls"</span>, <span class="at">sheet =</span> <span class="st">"demanda"</span>,</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">skip =</span> <span class="dv">3</span>, <span class="at">.name_repair =</span> <span class="st">"unique_quiet"</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>C.i <span class="ot">&lt;-</span> (DF.TRU2[<span class="dv">2</span><span class="sc">:</span><span class="dv">129</span>, <span class="dv">6</span>])[[<span class="dv">1</span>]]</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>C <span class="ot">&lt;-</span> DF.TRU2[<span class="dv">131</span>, <span class="dv">6</span>][[<span class="dv">1</span>]]</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>X.i <span class="ot">&lt;-</span> (DF.TRU2[<span class="dv">2</span><span class="sc">:</span><span class="dv">129</span>, <span class="dv">3</span>])[[<span class="dv">1</span>]]</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> DF.TRU2[<span class="dv">131</span>, <span class="dv">3</span>][[<span class="dv">1</span>]]</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>DF <span class="ot">&lt;-</span> DF.TRU2[<span class="dv">131</span>, <span class="dv">9</span>][[<span class="dv">1</span>]]</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(DF.TRU2)</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"C ="</span>, C))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "C = 4423548"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"X ="</span>, X))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "X = 1025056"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"DF ="</span>, DF))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "DF = 8001615"</code></pre>
+</div>
+</div>
+<p>Da TRU3, é importada a tabela do valor agregado. Desta é obtidas a matriz de componentes do valor agregado por atividade econômica (VAB.jm), bem como o valor agregado total por atividade (VAB.j) e o valor agregado total da economia (VAB). A última linha da matriz de componentes traz o número de empregos. Essa informação é transformada de unidades para milhares neste chunk para melhor apresentação dos resultados.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>VAB.TRU3 <span class="ot">&lt;-</span> <span class="fu">read_xls</span>(<span class="st">"dados-brutos/68_tab2_2018.xls"</span>, <span class="at">sheet =</span> <span class="st">"VA"</span>,</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">skip =</span> <span class="dv">3</span>, <span class="at">.name_repair =</span> <span class="st">"unique_quiet"</span>)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>VAB.nomes <span class="ot">&lt;-</span> VAB.TRU3[<span class="dv">2</span><span class="sc">:</span><span class="dv">15</span>, <span class="dv">1</span>][[<span class="dv">1</span>]]</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>VAB.jm <span class="ot">&lt;-</span> <span class="fu">data.matrix</span>(VAB.TRU3[<span class="dv">2</span><span class="sc">:</span><span class="dv">15</span>, <span class="dv">2</span><span class="sc">:</span><span class="dv">69</span>])</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>VAB.jm[<span class="dv">14</span>,] <span class="ot">&lt;-</span> VAB.jm[<span class="dv">14</span>,]<span class="sc">/</span><span class="dv">1000</span> <span class="co"># empregos em milhares</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>VAB.j <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">t</span>(VAB.TRU3[<span class="dv">2</span>, <span class="dv">2</span><span class="sc">:</span><span class="dv">69</span>]))</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>VAB <span class="ot">&lt;-</span> VAB.TRU3[<span class="dv">2</span>, <span class="dv">70</span>][[<span class="dv">1</span>]]</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(VAB.TRU3)</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"VAB ="</span>, VAB))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "VAB = 6011150"</code></pre>
+</div>
+</div>
+</section>
+<section id="pesquisa-anual-de-serviços" class="level2">
+<h2 class="anchored" data-anchor-id="pesquisa-anual-de-serviços">Pesquisa Anual de Serviços</h2>
+<p>A Tabela 26 da Pesquisa Anual de Serviços (PAS) do IBGE informa a receita operacional líquida do total das empresas de agenciamento de viagens do país. Essa informação é salva como um objeto para ser utilizada na estimativa da demanda por serviços dessa categoria.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>pas26 <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">"dados-brutos/Tabela 26.xlsx"</span>, <span class="at">sheet =</span> <span class="st">"Tab26a"</span>,</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">skip =</span> <span class="dv">5</span>, <span class="at">.name_repair =</span> <span class="st">"unique_quiet"</span>)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>pas26 <span class="ot">&lt;-</span> <span class="fu">data.table</span>(pas26)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>pas26 <span class="ot">&lt;-</span> pas26[, <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">8</span>)]</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(pas26) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"variavel"</span>, <span class="st">"valor"</span>)</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>D.agencias <span class="ot">&lt;-</span> pas26[variavel<span class="sc">==</span><span class="st">"1 - Receita operacional líquida"</span>, valor]<span class="sc">/</span><span class="dv">1000</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(pas26)</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"D.agencias ="</span>, D.agencias))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "D.agencias = 11378.474"</code></pre>
+</div>
+</div>
+</section>
+<section id="dados-originais-da-pesquisa" class="level2">
+<h2 class="anchored" data-anchor-id="dados-originais-da-pesquisa">Dados originais da pesquisa</h2>
+<p>Diferentes métodos de estimação da demanda turística são utilizados neste projeto. Os métodos são registrados em uma tabela especial elaborada para este fim.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>tipo.estimacao <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"dados-originais/tipo.estimacao.csv"</span>)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(tipo.estimacao)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">tru.cod</th>
+<th style="text-align: left;">C</th>
+<th style="text-align: left;">CI</th>
+<th style="text-align: left;">X</th>
+<th style="text-align: left;">M</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">19912</td>
+<td style="text-align: left;">A</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">49002</td>
+<td style="text-align: left;">A</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">50001</td>
+<td style="text-align: left;">A</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">51001</td>
+<td style="text-align: left;">A</td>
+<td style="text-align: left;">D</td>
+<td style="text-align: left;">H</td>
+<td style="text-align: left;">H</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">52801</td>
+<td style="text-align: left;">B</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">55001</td>
+<td style="text-align: left;">A</td>
+<td style="text-align: left;">E</td>
+<td style="text-align: left;">H</td>
+<td style="text-align: left;">H</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">56001</td>
+<td style="text-align: left;">A</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">H</td>
+<td style="text-align: left;">H</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">59801</td>
+<td style="text-align: left;">B</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">68001</td>
+<td style="text-align: left;">B</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">77001</td>
+<td style="text-align: left;">B</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">78802</td>
+<td style="text-align: left;">C</td>
+<td style="text-align: left;">G</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">90801</td>
+<td style="text-align: left;">A</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Total</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>As despesas turísticas foram registradas na POF em categorias de produtos especialmente desenhadas para aquela pesquisa. Uma vez que o tradutor oficial de códigos da POF 2017-2018 para o SCN ainda não havia sido divulgado pelo IBGE, esse processo de classificação partiu do <a href="https://ftp.ibge.gov.br/Contas_Nacionais/Sistema_de_Contas_Nacionais/Tradutores/Tradutor_POF2009_ContasNacionais.xls">tradutor POF-SCN elaborado pelo IBGE para a POF 2009</a>. Os produtos da POF 2017-2018 que não constavam na POF 2009, seja por serem novos ou por terem sido especificados de forma mais detalhada, foram classificados a partir do <a href="https://ftp.ibge.gov.br/Contas_Nacionais/Sistema_de_Contas_Nacionais/Tradutores/Tradutor_Atividade_CNAE.xls">tradutor de categorias da CNAE 2.0 para o SCN</a>. No tradutor elaborado, duas categorias de despesas turísticas da POF não foram associadas a nenhuma categoria do SCN: agregado (conjunto indivisível de produtos) e taxa alfandegária.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>tradutor.PT.i <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"dados-originais/tradutor.PT.i.csv"</span>, <span class="at">encoding =</span> <span class="st">"UTF-8"</span>)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>tradutor.PT.i <span class="ot">&lt;-</span> tradutor.PT.i[<span class="sc">!</span><span class="fu">is.na</span>(tru.cod)]</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(tradutor.PT.i))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 2%">
+<col style="width: 21%">
+<col style="width: 2%">
+<col style="width: 9%">
+<col style="width: 6%">
+<col style="width: 10%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">V9001</th>
+<th style="text-align: left;">descricao.produto</th>
+<th style="text-align: right;">tru.cod</th>
+<th style="text-align: left;">tru.desc</th>
+<th style="text-align: right;">produto.intermediacao</th>
+<th style="text-align: right;">produto.intermediacao.internacional</th>
+<th style="text-align: right;">produto.intermediacao.49002</th>
+<th style="text-align: right;">produto.intermediacao.50001</th>
+<th style="text-align: right;">produto.intermediacao.51001</th>
+<th style="text-align: right;">produto.intermediacao.55001</th>
+<th style="text-align: right;">produto.intermediacao.56001</th>
+<th style="text-align: right;">produto.intermediacao.90801</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">4101501</td>
+<td style="text-align: left;">COMBUSTIVEL DE VEICULO</td>
+<td style="text-align: right;">19912</td>
+<td style="text-align: left;">Gasoálcool</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4101801</td>
+<td style="text-align: left;">EXCURSAO (EXCETO ESCOLAR)</td>
+<td style="text-align: right;">78802</td>
+<td style="text-align: left;">Outros serviços administrativos</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4102701</td>
+<td style="text-align: left;">PACOTE TURISTICO NACIONAL (TRANSPORTE, HOSPEDAGEM, ALIMENTACAO E DIVERSAO)</td>
+<td style="text-align: right;">78802</td>
+<td style="text-align: left;">Outros serviços administrativos</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4102801</td>
+<td style="text-align: left;">PACOTE TURISTICO NACIONAL (TRANSPORTE, HOSPEDAGEM E ALIMENTACAO)</td>
+<td style="text-align: right;">78802</td>
+<td style="text-align: left;">Outros serviços administrativos</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4102901</td>
+<td style="text-align: left;">PACOTE TURISTICO NACIONAL (TRANSPORTE, HOSPEDAGEM E DIVERSAO)</td>
+<td style="text-align: right;">78802</td>
+<td style="text-align: left;">Outros serviços administrativos</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4103001</td>
+<td style="text-align: left;">PACOTE TURISTICO NACIONAL (TRANSPORTE E HOSPEDAGEM)</td>
+<td style="text-align: right;">78802</td>
+<td style="text-align: left;">Outros serviços administrativos</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Por fim, o terceiro e último arquivo com dados originais desta pesquisa traz duas informações pontuais: a participação das famílias na demanda total das empresas de agenciamento de viagens no Brasil (FENACTUR) e a participação do transporte de passageiros na receita total das companhias aéreas no país (ANAC).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>dados.pontuais <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"dados-originais/dados.pontuais.csv"</span>, <span class="at">encoding =</span> <span class="st">"UTF-8"</span>)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>participacao.familias.D.agencias <span class="ot">&lt;-</span> </span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  dados.pontuais[variavel<span class="sc">==</span><span class="st">"participacao.familias.D.agencias"</span>, valor]</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>participacao.passageiros.receita.ciasaereas <span class="ot">&lt;-</span> </span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  dados.pontuais[variavel<span class="sc">==</span><span class="st">"participacao.passageiros.receita.ciasaereas"</span>, valor]</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(dados.pontuais)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="tabulação-de-dados-da-pof" class="level1">
+<h1>Tabulação de dados da POF</h1>
+<p>Nesta seção, são tabuladas as informações da POF a fim de computar os Quocientes de Participação do Turismo (QPTs). O processo começa com a elaboração de uma informação específica oriunda dos microdados da RAIS: a proporção de empregados em hotéis no total de empregados em serviços de alojamento.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>rais <span class="ot">&lt;-</span> </span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fread</span>(<span class="st">"dados-brutos/RAIS_ESTAB_PUB.txt"</span>, <span class="at">encoding =</span> <span class="st">"Latin-1"</span>,</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">select =</span> <span class="fu">c</span>(<span class="st">"CNAE 2.0 Classe"</span>, <span class="st">"Qtd Vínculos Ativos"</span>, <span class="st">"CNAE 2.0 Subclasse"</span>))</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(rais) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"cnae"</span>, <span class="st">"vinculos"</span>, <span class="st">"cnaesub"</span>)</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>rais <span class="ot">&lt;-</span> rais[(cnae<span class="sc">==</span><span class="dv">55108</span> <span class="sc">|</span> cnae<span class="sc">==</span><span class="dv">55906</span>)]</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>rais <span class="ot">&lt;-</span> rais[, .(<span class="at">vinculos=</span><span class="fu">sum</span>(vinculos)), by<span class="ot">=</span>.(cnaesub)]</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>participacao.hoteis.alojamento <span class="ot">&lt;-</span> </span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>  rais[cnaesub<span class="sc">==</span><span class="dv">5510801</span>, vinculos]<span class="sc">/</span><span class="fu">sum</span>(rais<span class="sc">$</span>vinculos)</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(rais)</span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"participacao.hoteis.alojamento ="</span>, </span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>            <span class="fu">percent</span>(participacao.hoteis.alojamento, <span class="at">accuracy=</span><span class="fl">0.01</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Em seguida, o banco de dados da POF é carregado e tratado. Os itens de despesa das famílias são classificados segundo os códigos do SCN a partir do uso do tradutor discutido anteriormente. As despesas em produtos não consumidos por turistas são eliminadas do banco. As despesas nas categorias remanescentes são classificadas em turísticas (realizadas durante ou em razão de viagens turísticas, sendo registradas no Quadro 41 da POF, aqui assinaladas por “CT.i.POF”) e não turísticas (não realizadas durante ou em razão de viagens turísticas, sendo registradas em outros quadros da POF, aqui assinaladas por “CR.i.POF”. Por fim, o valor das despesas registradas é multiplicado pelo peso amostral da POF para que os resultados sejam representativos de toda a população brasileira.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>C.POF <span class="ot">&lt;-</span> <span class="fu">data.table</span>(C.POF)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>C.POF <span class="ot">&lt;-</span> <span class="fu">left_join</span>(C.POF, tradutor.PT.i[, .(V9001, tru.cod)], <span class="at">by =</span> <span class="st">"V9001"</span>)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>C.POF <span class="ot">&lt;-</span> C.POF[(<span class="sc">!</span><span class="fu">is.na</span>(tru.cod))]</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>C.POF<span class="sc">$</span>turismo <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(C.POF<span class="sc">$</span>QUADRO<span class="sc">==</span><span class="dv">41</span>, <span class="st">"CT.i.POF"</span>, <span class="st">"CR.i.POF"</span>)</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>C.POF<span class="sc">$</span>valor.peso <span class="ot">&lt;-</span> C.POF<span class="sc">$</span>V8000_DEFLA<span class="sc">*</span>C.POF<span class="sc">$</span>FATOR_ANUALIZACAO<span class="sc">*</span>C.POF<span class="sc">$</span>PESO_FINAL</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>As despesas das famílias registradas pela POF são agregadas por código do SCN e pela natureza turística ou não turística. Os valores são registrados em milhões de reais,</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>CT.i.POF <span class="ot">&lt;-</span> C.POF[, .(<span class="at">C=</span><span class="fu">sum</span>(valor.peso)<span class="sc">/</span><span class="dv">1000000</span>), by <span class="ot">=</span> .(tru.cod, turismo)]</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>CT.i.POF <span class="ot">&lt;-</span> <span class="fu">dcast</span>(CT.i.POF, tru.cod <span class="sc">~</span> turismo, <span class="at">value.var =</span> <span class="st">"C"</span>)</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>CT.i.POF[<span class="fu">is.na</span>(CR.i.POF)]<span class="sc">$</span>CR.i.POF <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(CT.i.POF)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">tru.cod</th>
+<th style="text-align: right;">CR.i.POF</th>
+<th style="text-align: right;">CT.i.POF</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">19912</td>
+<td style="text-align: right;">139232.13107</td>
+<td style="text-align: right;">12020.03870</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">49002</td>
+<td style="text-align: right;">44497.24107</td>
+<td style="text-align: right;">7642.74009</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">50001</td>
+<td style="text-align: right;">215.26968</td>
+<td style="text-align: right;">369.73791</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">51001</td>
+<td style="text-align: right;">349.52852</td>
+<td style="text-align: right;">13364.49125</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">52801</td>
+<td style="text-align: right;">2634.44913</td>
+<td style="text-align: right;">1359.42243</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">55001</td>
+<td style="text-align: right;">220.08109</td>
+<td style="text-align: right;">10775.02145</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">56001</td>
+<td style="text-align: right;">153209.67171</td>
+<td style="text-align: right;">20700.73335</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">59801</td>
+<td style="text-align: right;">4814.56158</td>
+<td style="text-align: right;">56.74882</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">68001</td>
+<td style="text-align: right;">0.00000</td>
+<td style="text-align: right;">623.77939</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">77001</td>
+<td style="text-align: right;">77.26078</td>
+<td style="text-align: right;">713.82627</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">78802</td>
+<td style="text-align: right;">0.00000</td>
+<td style="text-align: right;">14083.49982</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">90801</td>
+<td style="text-align: right;">11349.40561</td>
+<td style="text-align: right;">1053.25670</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Os dados da POF são ainda utilizados para calcular a proporção das despesas turísticas com alimentação em relação às despesas com alojamento. Essa proporção será utilizada para estimar o consumo intermediário turístico com serviços de alimentação.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>pof.D.alojalim <span class="ot">&lt;-</span> C.POF[((tru.cod<span class="sc">==</span><span class="dv">55001</span> <span class="sc">|</span> tru.cod<span class="sc">==</span><span class="dv">56001</span>) <span class="sc">&amp;</span> QUADRO<span class="sc">==</span><span class="dv">41</span>)]</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>pof.D.alojalim <span class="ot">&lt;-</span> </span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dcast</span>(pof.D.alojalim, COD_UPA <span class="sc">+</span> NUM_DOM <span class="sc">+</span> NUM_UC <span class="sc">+</span> COD_INFORMANTE <span class="sc">~</span> tru.cod,</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">fun.aggregate =</span> sum,  <span class="at">value.var =</span> <span class="st">"valor.peso"</span>)</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>pof.D.alojalim <span class="ot">&lt;-</span> <span class="fu">colSums</span>(pof.D.alojalim[<span class="st">`</span><span class="at">55001</span><span class="st">`</span><span class="sc">&gt;</span><span class="dv">0</span>, .(<span class="st">`</span><span class="at">55001</span><span class="st">`</span>, <span class="st">`</span><span class="at">56001</span><span class="st">`</span>)])</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>prop.despesa.alim.aloj <span class="ot">&lt;-</span> pof.D.alojalim[<span class="dv">2</span>] <span class="sc">/</span> pof.D.alojalim[<span class="dv">1</span>]</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"prop.despesa.alim.aloj ="</span>, </span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>            <span class="fu">percent</span>(prop.despesa.alim.aloj, <span class="at">accuracy=</span><span class="fl">0.01</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "prop.despesa.alim.aloj = 59.13%"</code></pre>
+</div>
+</div>
+<section id="consumo-de-serviços-de-agenciamento-de-viagens" class="level2">
+<h2 class="anchored" data-anchor-id="consumo-de-serviços-de-agenciamento-de-viagens">Consumo de serviços de agenciamento de viagens</h2>
+<p>Embora a POF apresente dados bastante detalhados das despesas turísticas das famílias, as informações sobre os gastos com agenciamento de viagens não são diretamente compatíveis com as estatísticas da oferta. Ocorre que grande parte dos gastos realizados em agências de viagens não constituem receitas das agências, mas apenas intermediação de serviços turísticos. Sendo assim, torna-se necessário diferenciar os valores dos serviços das agências daqueles correspondentes aos serviços turísticos intermediados. Tal diferenciação foi feita a partir da conciliação de dados de oferta e demanda.</p>
+<p>Inicialmente, o valor da demanda total das agências de viagens no Brasil informado pela PAS (D.agencias) foi desagregado entre as parcelas devidas à demanda final das famílias (DF.agencias) e a demanda que corresponde ao consumo intermediário das empresas (CI.agencias). A diferença entre essa estimativa da demanda final das famílias e a despesa total das famílias em agências de viagens registrada pela POF constituiu nossa estimativa do valor dos serviços turísticos intermediados pelas agências para as família (DF.intermediado.agencias).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>DF.agencias <span class="ot">&lt;-</span> D.agencias <span class="sc">*</span> participacao.familias.D.agencias</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>CI.agencias <span class="ot">&lt;-</span> D.agencias <span class="sc">-</span> DF.agencias</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>DF.intermediado.agencias <span class="ot">&lt;-</span> CT.i.POF[tru.cod<span class="sc">==</span><span class="dv">78802</span>, CT.i.POF] <span class="sc">-</span> DF.agencias</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>A distribuição do valor total dos serviços nacionais intermediados entre as categorias de serviços seguiu a descrição dos pacotes turísticos registrados pela POF. Essa lista consta no tradutor de produtos (tradutor.PI.i). A lista foi diferenciada para viagens nacionais e internacionais.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>lista.produtos.intermediacao <span class="ot">&lt;-</span> tradutor.PT.i[produto.intermediacao<span class="sc">==</span><span class="dv">1</span>, V9001]</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>lista.produtos.intermediacao.internacional <span class="ot">&lt;-</span> </span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  tradutor.PT.i[produto.intermediacao.internacional<span class="sc">==</span><span class="dv">1</span>, V9001]</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>lista.produtos.intermediacao.nacional <span class="ot">&lt;-</span> </span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>  tradutor.PT.i[(produto.intermediacao<span class="sc">==</span><span class="dv">1</span> <span class="sc">&amp;</span> </span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">is.na</span>(produto.intermediacao.internacional)), V9001]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Os gasto totais com serviços intermediados foram distribuídos por categoria de produto segundo as proporções de gastos com cada categoria nas viagens sem serviços intermediados.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>DF.produtos.intermediacao <span class="ot">&lt;-</span> </span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  C.POF[V9001 <span class="sc">%in%</span> lista.produtos.intermediacao, <span class="fu">sum</span>(valor.peso)]</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>DF.produtos.intermediacao.internacional <span class="ot">&lt;-</span> </span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  C.POF[V9001 <span class="sc">%in%</span> lista.produtos.intermediacao.internacional, <span class="fu">sum</span>(valor.peso)]</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>prop.DF.produtos.intermediacao.internacional <span class="ot">&lt;-</span> </span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>  DF.produtos.intermediacao.internacional <span class="sc">/</span> DF.produtos.intermediacao</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>DF.intermediado.agencias.nacional <span class="ot">&lt;-</span> </span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>  DF.intermediado.agencias <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> prop.DF.produtos.intermediacao.internacional)</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>distribuicao.intermediacao <span class="ot">&lt;-</span> </span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>  C.POF[V9001 <span class="sc">%in%</span> lista.produtos.intermediacao.nacional, </span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>        .(<span class="at">valor.peso=</span><span class="fu">sum</span>(valor.peso)), by <span class="ot">=</span> .(V9001)]</span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>distribuicao.intermediacao <span class="ot">&lt;-</span> </span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(distribuicao.intermediacao, </span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>            tradutor.PT.i[V9001 <span class="sc">%in%</span> lista.produtos.intermediacao.nacional, </span>
+<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">7</span><span class="sc">:</span><span class="dv">12</span>)], <span class="at">by =</span> <span class="st">"V9001"</span>)</span>
+<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a>distribuicao.intermediacao <span class="ot">&lt;-</span> </span>
+<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">melt</span>(distribuicao.intermediacao, <span class="at">id.vars =</span> <span class="fu">c</span>(<span class="st">"V9001"</span>, <span class="st">"valor.peso"</span>))</span>
+<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a>distribuicao.intermediacao<span class="sc">$</span>tru.cod <span class="ot">&lt;-</span> </span>
+<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.integer</span>(<span class="fu">str_remove</span>(distribuicao.intermediacao<span class="sc">$</span>variable, </span>
+<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"produto.intermediacao."</span>))</span>
+<span id="cb39-21"><a href="#cb39-21" aria-hidden="true" tabindex="-1"></a>distribuicao.intermediacao <span class="ot">&lt;-</span> </span>
+<span id="cb39-22"><a href="#cb39-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(distribuicao.intermediacao, </span>
+<span id="cb39-23"><a href="#cb39-23" aria-hidden="true" tabindex="-1"></a>            CT.i.POF, <span class="at">by =</span> <span class="st">"tru.cod"</span>)</span>
+<span id="cb39-24"><a href="#cb39-24" aria-hidden="true" tabindex="-1"></a>distribuicao.intermediacao<span class="sc">$</span>CT.i.POF <span class="ot">&lt;-</span> </span>
+<span id="cb39-25"><a href="#cb39-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ifelse</span>(<span class="fu">is.na</span>(distribuicao.intermediacao<span class="sc">$</span>value), <span class="dv">0</span>, </span>
+<span id="cb39-26"><a href="#cb39-26" aria-hidden="true" tabindex="-1"></a>         distribuicao.intermediacao<span class="sc">$</span>CT.i.POF)</span>
+<span id="cb39-27"><a href="#cb39-27" aria-hidden="true" tabindex="-1"></a>distribuicao.intermediacao <span class="ot">&lt;-</span> </span>
+<span id="cb39-28"><a href="#cb39-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dcast</span>(distribuicao.intermediacao, V9001 <span class="sc">+</span> valor.peso <span class="sc">~</span> tru.cod, </span>
+<span id="cb39-29"><a href="#cb39-29" aria-hidden="true" tabindex="-1"></a>        <span class="at">value.var =</span> <span class="st">"CT.i.POF"</span>)</span>
+<span id="cb39-30"><a href="#cb39-30" aria-hidden="true" tabindex="-1"></a>distribuicao.intermediacao<span class="sc">$</span>CT.i.POF <span class="ot">&lt;-</span> </span>
+<span id="cb39-31"><a href="#cb39-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowSums</span>(distribuicao.intermediacao[, <span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)])</span>
+<span id="cb39-32"><a href="#cb39-32" aria-hidden="true" tabindex="-1"></a>distribuicao.intermediacao <span class="ot">&lt;-</span> </span>
+<span id="cb39-33"><a href="#cb39-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">melt</span>(distribuicao.intermediacao, <span class="at">id.vars =</span> <span class="fu">c</span>(<span class="st">"V9001"</span>, <span class="st">"valor.peso"</span>, <span class="st">"CT.i.POF"</span>))</span>
+<span id="cb39-34"><a href="#cb39-34" aria-hidden="true" tabindex="-1"></a>distribuicao.intermediacao<span class="sc">$</span>prop <span class="ot">&lt;-</span> </span>
+<span id="cb39-35"><a href="#cb39-35" aria-hidden="true" tabindex="-1"></a>  distribuicao.intermediacao<span class="sc">$</span>value <span class="sc">/</span> distribuicao.intermediacao<span class="sc">$</span>CT.i.POF</span>
+<span id="cb39-36"><a href="#cb39-36" aria-hidden="true" tabindex="-1"></a>distribuicao.intermediacao<span class="sc">$</span>valor.peso <span class="ot">&lt;-</span> </span>
+<span id="cb39-37"><a href="#cb39-37" aria-hidden="true" tabindex="-1"></a>  distribuicao.intermediacao<span class="sc">$</span>prop <span class="sc">*</span> distribuicao.intermediacao<span class="sc">$</span>valor.peso</span>
+<span id="cb39-38"><a href="#cb39-38" aria-hidden="true" tabindex="-1"></a>distribuicao.intermediacao <span class="ot">&lt;-</span> </span>
+<span id="cb39-39"><a href="#cb39-39" aria-hidden="true" tabindex="-1"></a>  distribuicao.intermediacao[, .(<span class="at">distribuicao.intermediacao=</span><span class="fu">sum</span>(valor.peso)), </span>
+<span id="cb39-40"><a href="#cb39-40" aria-hidden="true" tabindex="-1"></a>                             by <span class="ot">=</span> <span class="st">"variable"</span>]</span>
+<span id="cb39-41"><a href="#cb39-41" aria-hidden="true" tabindex="-1"></a>distribuicao.intermediacao<span class="sc">$</span>variable <span class="ot">&lt;-</span> </span>
+<span id="cb39-42"><a href="#cb39-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.character</span>(distribuicao.intermediacao<span class="sc">$</span>variable)</span>
+<span id="cb39-43"><a href="#cb39-43" aria-hidden="true" tabindex="-1"></a>distribuicao.intermediacao<span class="sc">$</span>distribuicao.intermediacao <span class="ot">&lt;-</span> </span>
+<span id="cb39-44"><a href="#cb39-44" aria-hidden="true" tabindex="-1"></a>  distribuicao.intermediacao<span class="sc">$</span>distribuicao.intermediacao <span class="sc">/</span> </span>
+<span id="cb39-45"><a href="#cb39-45" aria-hidden="true" tabindex="-1"></a>  distribuicao.intermediacao[, <span class="fu">sum</span>(distribuicao.intermediacao)]</span>
+<span id="cb39-46"><a href="#cb39-46" aria-hidden="true" tabindex="-1"></a>distribuicao.intermediacao<span class="sc">$</span>distribuicao.intermediacao <span class="ot">&lt;-</span> </span>
+<span id="cb39-47"><a href="#cb39-47" aria-hidden="true" tabindex="-1"></a>  distribuicao.intermediacao<span class="sc">$</span>distribuicao.intermediacao <span class="sc">*</span> </span>
+<span id="cb39-48"><a href="#cb39-48" aria-hidden="true" tabindex="-1"></a>  DF.intermediado.agencias.nacional</span>
+<span id="cb39-49"><a href="#cb39-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-50"><a href="#cb39-50" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(C.POF)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>O valor estimado dos serviços nacionais de terceiros intermediados pelas agências foi adicionado à despesa explicitamente declarada na POF com cada categoria de produtos turísticos. As despesas com serviços hoteleiros intermediados pelas agências, por exemplo, foram somadas às despesas com serviços hoteleiros não intermediados.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>CT.i.POF<span class="sc">$</span>tru.cod <span class="ot">&lt;-</span> <span class="fu">as.character</span>(CT.i.POF<span class="sc">$</span>tru.cod)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>CT.i.POF <span class="ot">&lt;-</span> </span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(CT.i.POF, distribuicao.intermediacao, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"tru.cod"</span> <span class="ot">=</span> <span class="st">"variable"</span>))</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>CT.i.POF[<span class="fu">is.na</span>(distribuicao.intermediacao)]<span class="sc">$</span>distribuicao.intermediacao <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>CT.i.POF<span class="sc">$</span>CT.i.POF <span class="ot">&lt;-</span> CT.i.POF<span class="sc">$</span>CT.i.POF <span class="sc">+</span> CT.i.POF<span class="sc">$</span>distribuicao.intermediacao</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="quocientes-de-participação-do-turismo-qpt" class="level1">
+<h1>Quocientes de Participação do Turismo (QPT)</h1>
+<p>Os Quocientes de Participação do Turismo (QPT) correspondem à proporção dos gastos turísticos com determinada categoria de produtos em relação ao total de gastos com essa categoria (incluindo gastos turísticos e não turísticos). O QPT dos serviços de alimentação, por exemplo, é igual ao total de gastos turísticos das famílias com serviços de alimentação durante viagens turísticas dividido pelo total de gastos com serviços de alimentação (durante e fora das viagens turísticas). Esses coeficientes foram calculados a partir dos dados registrados pela POF e ajustados pelas estimativas do consumo de serviços intermediados por agências de viagens.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>CT.i.POF<span class="sc">$</span>QPT.i <span class="ot">&lt;-</span> CT.i.POF<span class="sc">$</span>CT.i.POF <span class="sc">/</span> (CT.i.POF<span class="sc">$</span>CR.i.POF <span class="sc">+</span> CT.i.POF<span class="sc">$</span>CT.i.POF)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>CT.i.POF <span class="ot">&lt;-</span> <span class="fu">left_join</span>(<span class="fu">data.table</span>(<span class="at">tru.cod=</span>P.i), CT.i.POF, <span class="at">by=</span><span class="st">"tru.cod"</span>)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>QPT.i <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(CT.i.POF<span class="sc">$</span>QPT.i)</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>QPT.i[<span class="fu">is.na</span>(QPT.i)] <span class="ot">&lt;-</span> <span class="dv">0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Os QPT compõem a Tabela 1 do artigo.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>Tabela1 <span class="ot">&lt;-</span> <span class="fu">data.table</span>(P.nomes, <span class="fu">percent</span>(QPT.i, <span class="at">accuracy=</span><span class="dv">1</span>))[QPT.i<span class="sc">&gt;</span><span class="dv">0</span>]</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(Tabela1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">P.nomes</th>
+<th style="text-align: left;">V2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Combustível veicular</td>
+<td style="text-align: left;">8%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Transporte terrestre</td>
+<td style="text-align: left;">16%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Transporte aquaviário</td>
+<td style="text-align: left;">65%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Transporte aéreo</td>
+<td style="text-align: left;">98%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Estacionamentos e pedágios</td>
+<td style="text-align: left;">34%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hotéis e similares</td>
+<td style="text-align: left;">98%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Serviços de alimentação</td>
+<td style="text-align: left;">13%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cinema</td>
+<td style="text-align: left;">1%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Aluguel de imóveis</td>
+<td style="text-align: left;">100%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Aluguel de veículos</td>
+<td style="text-align: left;">90%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Agenciamento de viagens</td>
+<td style="text-align: left;">100%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Artes, cultura, esporte e recreação</td>
+<td style="text-align: left;">9%</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="estimativas-da-demanda-turística" class="level1">
+<h1>Estimativas da demanda turística</h1>
+<p>A demanda turística total foi estimada por meio de 8 estratégias diferentes. A principal estratégia (A) consiste na aplicação dos QPT sobre os dados do consumo das famílias apresentados nas TRU.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>CT.i.tipoa <span class="ot">&lt;-</span> C.i <span class="sc">*</span> QPT.i</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>A estratégia B consiste na adoção direta das estimativas obtidas a partir da POF, sem conciliação com os dados de oferta oriundos das TRU.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>CT.i.tipob <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(CT.i.POF<span class="sc">$</span>CT.i.POF)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>CT.i.tipob[<span class="fu">is.na</span>(CT.i.tipob)] <span class="ot">&lt;-</span> <span class="dv">0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>A estratégia C corresponde à adoção da estimativa da demanda final das famílias por serviços das agências de viagens (não os serviços intermediados, mas sim o próprio serviço de intermediação) obtida anteriormente a partir da combinação dos dados da PAS e da POF (DF.agencias). Desta forma, o consumo turístico das famílias foi estimado para cada categoria de produtos (CT.i) conforme as diferentes estratégias adotadas.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>tipo.estimacao <span class="ot">&lt;-</span> <span class="fu">left_join</span>(<span class="fu">data.table</span>(<span class="at">tru.cod=</span>P.i), tipo.estimacao, <span class="at">by=</span><span class="st">"tru.cod"</span>)</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>CT.i <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(tipo.estimacao<span class="sc">$</span>C<span class="sc">==</span><span class="st">"A"</span>, CT.i.tipoa,</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>               <span class="fu">ifelse</span>(tipo.estimacao<span class="sc">$</span>C<span class="sc">==</span><span class="st">"B"</span>, CT.i.tipob,</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">ifelse</span>(tipo.estimacao<span class="sc">$</span>C<span class="sc">==</span><span class="st">"C"</span>, DF.agencias, <span class="dv">0</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>O consumo intermediário turístico por categoria de produto (CIT.i) foi estimado a partir de quatro estratégias diferentes. A estratégia D consiste na aplicação da participação do transporte de passageiros na receita total das companhias aéreas sobre o valor do consumo intermediário de transporte aéreo registrado nas TRU. A estratégia E corresponde à aplicação da proporção dos empregados em hotéis no total de empregados em serviços de alojamento sobre o valor do consumo intermediário de alojamento registrado nas TRU. A estratégia F é a aplicação da proporção entre gastos com alimentação e com alojamento observada nas viagens das famílias sobre o valor do consumo intermediário de alojamento registrado nas TRU. Por fim, a estratégia G é adotar a estimativa do consumo intermediário de serviços de agenciamento de viagens elaborada anteriormente (CI.agencias).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>CIT.i <span class="ot">&lt;-</span> </span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ifelse</span>(tipo.estimacao<span class="sc">$</span>CI<span class="sc">==</span><span class="st">"D"</span>, CI.i <span class="sc">*</span> participacao.passageiros.receita.ciasaereas,</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>         <span class="fu">ifelse</span>(tipo.estimacao<span class="sc">$</span>CI<span class="sc">==</span><span class="st">"E"</span>, CI.i <span class="sc">*</span> participacao.hoteis.alojamento,</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>                <span class="fu">ifelse</span>(tipo.estimacao<span class="sc">$</span>CI<span class="sc">==</span><span class="st">"F"</span>, CI.i[<span class="dv">101</span>] <span class="sc">*</span> </span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>                         participacao.hoteis.alojamento <span class="sc">*</span> prop.despesa.alim.aloj,</span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>                       <span class="fu">ifelse</span>(tipo.estimacao<span class="sc">$</span>CI<span class="sc">==</span><span class="st">"G"</span>, CI.agencias, <span class="dv">0</span>))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Os dados originais das TRU foram adotados com estimativas das exportações e importações turísticas para os serviços de transporte aéreo, hotéis e similares, e serviços de alimentação.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>XT.i <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(tipo.estimacao<span class="sc">$</span>X<span class="sc">==</span><span class="st">"H"</span>, X.i, <span class="dv">0</span>)</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>MT.i <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(tipo.estimacao<span class="sc">$</span>X<span class="sc">==</span><span class="st">"H"</span>, M.i, <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>A soma do consumo turístico das famílias (CF.i) com as exportações turísticas (XT.i) forma a demanda final turística (DFT.i). Esta, somada ao consumo intermediário turístico (CIT.i) constitui a demanda turística total (DTT.i).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>DFT.i <span class="ot">&lt;-</span> CT.i <span class="sc">+</span> XT.i</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>DTT.i <span class="ot">&lt;-</span> DFT.i <span class="sc">+</span> CIT.i</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>DTT <span class="ot">&lt;-</span> <span class="fu">sum</span>(DTT.i, <span class="at">na.rm=</span>T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="outros-agregados-macroeconômicos" class="level1">
+<h1>Outros agregados macroeconômicos</h1>
+<p>A partir das estimativas da demanda turística elaboradas anteriormente, foram calculados os demais agregados macroeconômicos. Essas estimativas seguiram o pressuposto da proporcionalidade, assumindo que a estrutura da economia pode ser representada por equações lineares. Logo, a proporção entre a demanda turística total e a demanda total da economia para cada categoria de produtos (PROPT.i) foi aplicada sobre os demais agregados macroeconômicos para estimar o valor desses que é devido ao turismo. Essa lógica foi aplicada à estimativa das margens do comércio e transporte, bem como dos impostos sobre produtos.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>PROPT.i <span class="ot">&lt;-</span> DTT.i <span class="sc">/</span> DT.i</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>MGCT.i <span class="ot">&lt;-</span> MGC.i <span class="sc">*</span> PROPT.i</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>MGCT <span class="ot">&lt;-</span> <span class="fu">sum</span>(MGCT.i, <span class="at">na.rm=</span>T)</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>MGTT.i <span class="ot">&lt;-</span> MGT.i <span class="sc">*</span> PROPT.i</span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>MGTT <span class="ot">&lt;-</span> <span class="fu">sum</span>(MGTT.i, <span class="at">na.rm=</span>T)</span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>IPT.ik <span class="ot">&lt;-</span> IP.ik <span class="sc">*</span> PROPT.i</span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>IPT.i <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(IPT.ik)</span>
+<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>IPT <span class="ot">&lt;-</span> <span class="fu">sum</span>(IPT.ik, <span class="at">na.rm=</span>T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>O valor da produção turística por categoria de produtos corresponde à demanda total subtraída das margens do comércio e transporte, dos impostos sobre produtos, e das importações.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>VPT.i <span class="ot">&lt;-</span> DTT.i <span class="sc">-</span> MGCT.i <span class="sc">-</span> MGTT.i <span class="sc">-</span> IPT.i <span class="sc">-</span> MT.i</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>VPT <span class="ot">&lt;-</span> <span class="fu">sum</span>(VPT.i, <span class="at">na.rm=</span>T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Este trabalho assume o pressuposto de identidade entre produtos e atividades turísticas. A justificativa disto é detalhada no artigo publicado na RTA. Desta forma, o valor da produção de cada categoria de produto conduz diretamente à estimativa do valor da produção por atividade.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>VPT.j <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">tru.cod=</span><span class="fu">floor</span>(</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.numeric</span>(P.i)<span class="sc">/</span><span class="dv">10</span>), VPT.i)[, .(<span class="at">VPT=</span><span class="fu">sum</span>(VPT.i, <span class="at">na.rm=</span>T)), by<span class="ot">=</span>tru.cod][, VPT]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>A estrutura de consumo intermediário das atividades econômicas adotada para a estimação do consumo intermediário da produção turística (CIPT). Logo, a proporção entre o valor do consumo intermediário e o valor da produçaõ de cada atividade econômica é aplicada sobre o valor da produção turística para se chegar ao CIPT.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>CIPT.j <span class="ot">&lt;-</span> (CI.j <span class="sc">/</span> VP.j) <span class="sc">*</span> VPT.j</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>CIPT <span class="ot">&lt;-</span> <span class="fu">sum</span>(CIPT.j, <span class="at">na.rm=</span>T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>O valor adicionado bruto das atividades turísticas (VABT.j) é a diferença entre o valor da produção turística (VPT.j) e o valor do consumo intermediário da produção turística (CIPT.j).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>VABT.j <span class="ot">&lt;-</span> VPT.j <span class="sc">-</span> CIPT.j</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>VABT <span class="ot">&lt;-</span> VPT <span class="sc">-</span> CIPT</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>A participação dos compomentes do total do valor adicionado foi utilizada para estimar a parcela devida ao turismo em cada elemento.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>VAB.prop <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">t</span>(VAB.jm) <span class="sc">/</span> VAB.j)</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>VABT.jm <span class="ot">&lt;-</span> <span class="fu">t</span>(VABT.j <span class="sc">*</span> <span class="fu">t</span>(VAB.prop))</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>VABT.m <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(VABT.jm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Por fim, o PIB direto do turismo (PIBDT) é calculado pelas óticas da oferta e da produção. Na primeira pespectiva, o PIBDT é igual à demanda turística total menos o consumo intermediário da produção turística, das margens do comércio e transporte e das importações turísticas. Na perspectiva da produção, o PIBDT equivale ao valor da produção turística, somado aos impostos sobre produtos, menos o consumo intermediário da produção turística. A comparação dos valores calculados por ambas as óticas confirma a consistência da estimativa.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>MT <span class="ot">&lt;-</span> <span class="fu">sum</span>(MT.i, <span class="at">na.rm=</span>T)</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>PIBDT.Oferta <span class="ot">&lt;-</span> DTT <span class="sc">-</span> CIPT <span class="sc">-</span> MGCT <span class="sc">-</span> MGTT <span class="sc">-</span> MT </span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>PIBDT.Producao <span class="ot">&lt;-</span> VPT <span class="sc">+</span> IPT <span class="sc">-</span> CIPT</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"PIBDT ="</span>, PIBDT.Oferta, <span class="st">"=="</span>, PIBDT.Producao))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "PIBDT = 70019.4158650692 == 70019.4158650692"</code></pre>
+</div>
+</div>
+<p>A participação do turismo no consumo das famílias, no valor da produção e no PIB foi calculada.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>CT <span class="ot">&lt;-</span> <span class="fu">sum</span>(CT.i, <span class="at">na.rm=</span>T)</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"CT / C ="</span>, <span class="fu">percent</span>(CT <span class="sc">/</span> C, <span class="at">accuracy =</span> <span class="fl">0.01</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "CT / C = 2.30%"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"VPT / VP="</span>, <span class="fu">percent</span>(VPT <span class="sc">/</span> VP, <span class="at">accuracy =</span> <span class="fl">0.01</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "VPT / VP= 1.12%"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>PIB <span class="ot">&lt;-</span> VP <span class="sc">-</span> CI <span class="sc">+</span> IP</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"PIBDT / PIB ="</span>, <span class="fu">percent</span>(PIBDT.Oferta <span class="sc">/</span> PIB, <span class="at">accuracy=</span><span class="fl">0.01</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "PIBDT / PIB = 1.00%"</code></pre>
+</div>
+</div>
+</section>
+<section id="tabelas-finais" class="level1">
+<h1>Tabelas finais</h1>
+<section id="tabela-2" class="level2">
+<h2 class="anchored" data-anchor-id="tabela-2">Tabela 2</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>Tabela2 <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="st">`</span><span class="at">Categoria de produtos</span><span class="st">`</span><span class="ot">=</span>P.nomes, </span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>                      <span class="st">`</span><span class="at">Consumo turístico das famílias (CT)</span><span class="st">`</span><span class="ot">=</span>CT.i, </span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>                      <span class="st">`</span><span class="at">Exportação turística (XT)</span><span class="st">`</span><span class="ot">=</span>XT.i, </span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>                      <span class="st">`</span><span class="at">Demanda turística final (DTF)</span><span class="st">`</span><span class="ot">=</span>DFT.i, </span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>                      <span class="st">`</span><span class="at">Consumo intermediário turístico (CIT)</span><span class="st">`</span><span class="ot">=</span>CIT.i, </span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a>                      <span class="st">`</span><span class="at">Demanda turística total (DT)</span><span class="st">`</span><span class="ot">=</span>DTT.i)[<span class="sc">!</span><span class="fu">is.na</span>(DTT.i)] <span class="sc">%&gt;%</span> </span>
+<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_totals</span>(<span class="st">"row"</span>) <span class="sc">%&gt;%</span> <span class="fu">format</span>(<span class="at">digits=</span><span class="dv">2</span>, <span class="at">big.mark =</span> <span class="st">"."</span>, <span class="at">decimal.mark =</span> <span class="st">","</span>)</span>
+<span id="cb63-8"><a href="#cb63-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-9"><a href="#cb63-9" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(Tabela2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 13%">
+<col style="width: 15%">
+<col style="width: 19%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Categoria de produtos</th>
+<th style="text-align: left;">Consumo turístico das famílias (CT)</th>
+<th style="text-align: left;">Exportação turística (XT)</th>
+<th style="text-align: left;">Demanda turística final (DTF)</th>
+<th style="text-align: left;">Consumo intermediário turístico (CIT)</th>
+<th style="text-align: left;">Demanda turística total (DT)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Combustível veicular</td>
+<td style="text-align: left;">12.263</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">12.263</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">12.263</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Transporte terrestre</td>
+<td style="text-align: left;">15.461</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">15.461</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">15.461</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Transporte aquaviário</td>
+<td style="text-align: left;">1.392</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">1.392</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">1.392</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Transporte aéreo</td>
+<td style="text-align: left;">12.476</td>
+<td style="text-align: left;">7.914</td>
+<td style="text-align: left;">20.390</td>
+<td style="text-align: left;">28.212</td>
+<td style="text-align: left;">48.601</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Estacionamentos e pedágios</td>
+<td style="text-align: left;">1.359</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">1.359</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">1.359</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hotéis e similares</td>
+<td style="text-align: left;">13.283</td>
+<td style="text-align: left;">7.092</td>
+<td style="text-align: left;">20.375</td>
+<td style="text-align: left;">26.547</td>
+<td style="text-align: left;">46.921</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Serviços de alimentação</td>
+<td style="text-align: left;">34.939</td>
+<td style="text-align: left;">5.081</td>
+<td style="text-align: left;">40.020</td>
+<td style="text-align: left;">15.696</td>
+<td style="text-align: left;">55.716</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cinema</td>
+<td style="text-align: left;">57</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">57</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">57</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Aluguel de imóveis</td>
+<td style="text-align: left;">624</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">624</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">624</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Aluguel de veículos</td>
+<td style="text-align: left;">714</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">714</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">714</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Agenciamento de viagens</td>
+<td style="text-align: left;">6.372</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">6.372</td>
+<td style="text-align: left;">5.007</td>
+<td style="text-align: left;">11.378</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Artes, cultura, esporte e recreação</td>
+<td style="text-align: left;">3.018</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">3.018</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">3.018</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Total</td>
+<td style="text-align: left;">101.957</td>
+<td style="text-align: left;">20.087</td>
+<td style="text-align: left;">122.044</td>
+<td style="text-align: left;">75.460</td>
+<td style="text-align: left;">197.504</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="tabela-3" class="level2">
+<h2 class="anchored" data-anchor-id="tabela-3">Tabela 3</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>Tabela3 <span class="ot">&lt;-</span> </span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.table</span>(</span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Categoria de produtos</span><span class="st">`</span><span class="ot">=</span>P.nomes,</span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Oferta total (O)</span><span class="st">`</span><span class="ot">=</span>DT.i,</span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Oferta turística total (OT)</span><span class="st">`</span><span class="ot">=</span>DTT.i,</span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Participação da oferta turística na oferta total (OT/O)</span><span class="st">`</span><span class="ot">=</span></span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">percent</span>((DTT.i <span class="sc">/</span> DT.i), <span class="at">accuracy=</span><span class="fl">0.1</span>))[<span class="st">`</span><span class="at">Oferta turística total (OT)</span><span class="st">`</span><span class="sc">&gt;</span><span class="dv">0</span>] <span class="sc">%&gt;%</span></span>
+<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_totals</span>(<span class="st">"row"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb64-9"><a href="#cb64-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">format</span>(<span class="at">digits=</span><span class="dv">2</span>, <span class="at">big.mark =</span> <span class="st">"."</span>, <span class="at">decimal.mark =</span> <span class="st">","</span>)</span>
+<span id="cb64-10"><a href="#cb64-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-11"><a href="#cb64-11" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(Tabela3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 26%">
+<col style="width: 12%">
+<col style="width: 20%">
+<col style="width: 40%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Categoria de produtos</th>
+<th style="text-align: left;">Oferta total (O)</th>
+<th style="text-align: left;">Oferta turística total (OT)</th>
+<th style="text-align: left;">Participação da oferta turística na oferta total (OT/O)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Combustível veicular</td>
+<td style="text-align: left;">176.497</td>
+<td style="text-align: left;">12.263</td>
+<td style="text-align: left;">6.9%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Transporte terrestre</td>
+<td style="text-align: left;">116.288</td>
+<td style="text-align: left;">15.461</td>
+<td style="text-align: left;">13.3%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Transporte aquaviário</td>
+<td style="text-align: left;">33.195</td>
+<td style="text-align: left;">1.392</td>
+<td style="text-align: left;">4.2%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Transporte aéreo</td>
+<td style="text-align: left;">54.406</td>
+<td style="text-align: left;">48.601</td>
+<td style="text-align: left;">89.3%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Estacionamentos e pedágios</td>
+<td style="text-align: left;">127.776</td>
+<td style="text-align: left;">1.359</td>
+<td style="text-align: left;">1.1%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hotéis e similares</td>
+<td style="text-align: left;">53.579</td>
+<td style="text-align: left;">46.921</td>
+<td style="text-align: left;">87.6%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Serviços de alimentação</td>
+<td style="text-align: left;">325.012</td>
+<td style="text-align: left;">55.716</td>
+<td style="text-align: left;">17.1%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cinema</td>
+<td style="text-align: left;">46.185</td>
+<td style="text-align: left;">57</td>
+<td style="text-align: left;">0.1%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Aluguel de imóveis</td>
+<td style="text-align: left;">247.602</td>
+<td style="text-align: left;">624</td>
+<td style="text-align: left;">0.3%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Aluguel de veículos</td>
+<td style="text-align: left;">131.963</td>
+<td style="text-align: left;">714</td>
+<td style="text-align: left;">0.5%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Agenciamento de viagens</td>
+<td style="text-align: left;">164.380</td>
+<td style="text-align: left;">11.378</td>
+<td style="text-align: left;">6.9%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Artes, cultura, esporte e recreação</td>
+<td style="text-align: left;">52.012</td>
+<td style="text-align: left;">3.018</td>
+<td style="text-align: left;">5.8%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Total</td>
+<td style="text-align: left;">1.528.895</td>
+<td style="text-align: left;">197.504</td>
+<td style="text-align: left;">-</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="tabela-4" class="level2">
+<h2 class="anchored" data-anchor-id="tabela-4">Tabela 4</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>Tabela4 <span class="ot">&lt;-</span> </span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(<span class="fu">data.table</span>(<span class="st">`</span><span class="at">Categoria de produtos</span><span class="st">`</span><span class="ot">=</span>P.nomes,</span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>                   <span class="st">`</span><span class="at">Oferta turística (OT)</span><span class="st">`</span><span class="ot">=</span>DTT.i,</span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>                   <span class="st">`</span><span class="at">Margem do comércio sobre o turismo (MGCT)</span><span class="st">`</span><span class="ot">=</span>MGCT.i,</span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a>                   <span class="st">`</span><span class="at">Margem do transporte sobre o turismo (MGTT)</span><span class="st">`</span><span class="ot">=</span>MGTT.i,</span>
+<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a>                   <span class="st">`</span><span class="at">Imposto de importação sobre o turismo</span><span class="st">`</span><span class="ot">=</span>IPT.ik[,<span class="dv">1</span>],</span>
+<span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a>                   <span class="st">`</span><span class="at">IPI sobre o turismo</span><span class="st">`</span><span class="ot">=</span>IPT.ik[,<span class="dv">2</span>],</span>
+<span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a>                   <span class="st">`</span><span class="at">ICMS sobre o turismo</span><span class="st">`</span><span class="ot">=</span>IPT.ik[,<span class="dv">3</span>],</span>
+<span id="cb65-9"><a href="#cb65-9" aria-hidden="true" tabindex="-1"></a>                   <span class="st">`</span><span class="at">Outros impostos menos subsídios sobre o turismo</span><span class="st">`</span><span class="ot">=</span>IPT.ik[,<span class="dv">4</span>],</span>
+<span id="cb65-10"><a href="#cb65-10" aria-hidden="true" tabindex="-1"></a>                   <span class="st">`</span><span class="at">Total de impostos líquidos de subsídios sobre o turismo (IPT)</span><span class="st">`</span><span class="ot">=</span>IPT.i,</span>
+<span id="cb65-11"><a href="#cb65-11" aria-hidden="true" tabindex="-1"></a>                   <span class="st">`</span><span class="at">Valor total da produção turística (VPT)</span><span class="st">`</span><span class="ot">=</span>VPT.i,</span>
+<span id="cb65-12"><a href="#cb65-12" aria-hidden="true" tabindex="-1"></a>                   <span class="st">`</span><span class="at">Importação turística (MT)</span><span class="st">`</span><span class="ot">=</span>MT.i)[<span class="st">`</span><span class="at">Oferta turística (OT)</span><span class="st">`</span><span class="sc">&gt;</span><span class="dv">0</span>],</span>
+<span id="cb65-13"><a href="#cb65-13" aria-hidden="true" tabindex="-1"></a>        CIPT.j[CIPT.j<span class="sc">&gt;</span><span class="dv">0</span>]) <span class="sc">%&gt;%</span></span>
+<span id="cb65-14"><a href="#cb65-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_totals</span>(<span class="st">"row"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb65-15"><a href="#cb65-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">format</span>(<span class="at">digits=</span><span class="dv">1</span>, <span class="at">big.mark =</span> <span class="st">"."</span>, <span class="at">decimal.mark =</span> <span class="st">","</span>)</span>
+<span id="cb65-16"><a href="#cb65-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-17"><a href="#cb65-17" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(Tabela4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 8%">
+<col style="width: 5%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 9%">
+<col style="width: 4%">
+<col style="width: 5%">
+<col style="width: 11%">
+<col style="width: 15%">
+<col style="width: 9%">
+<col style="width: 6%">
+<col style="width: 1%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Categoria de produtos</th>
+<th style="text-align: left;">Oferta turística (OT)</th>
+<th style="text-align: left;">Margem do comércio sobre o turismo (MGCT)</th>
+<th style="text-align: left;">Margem do transporte sobre o turismo (MGTT)</th>
+<th style="text-align: left;">Imposto de importação sobre o turismo</th>
+<th style="text-align: left;">IPI sobre o turismo</th>
+<th style="text-align: left;">ICMS sobre o turismo</th>
+<th style="text-align: left;">Outros impostos menos subsídios sobre o turismo</th>
+<th style="text-align: left;">Total de impostos líquidos de subsídios sobre o turismo (IPT)</th>
+<th style="text-align: left;">Valor total da produção turística (VPT)</th>
+<th style="text-align: left;">Importação turística (MT)</th>
+<th style="text-align: left;">V2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Combustível veicular</td>
+<td style="text-align: left;">12.263</td>
+<td style="text-align: left;">2.232</td>
+<td style="text-align: left;">89</td>
+<td style="text-align: left;">0,000</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">2.674</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">2.674</td>
+<td style="text-align: left;">7.269</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">6.581</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Transporte terrestre</td>
+<td style="text-align: left;">15.461</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0,000</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">1.266</td>
+<td style="text-align: left;">45</td>
+<td style="text-align: left;">1.312</td>
+<td style="text-align: left;">14.150</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">8.288</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Transporte aquaviário</td>
+<td style="text-align: left;">1.392</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">-99</td>
+<td style="text-align: left;">0,000</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">151</td>
+<td style="text-align: left;">161</td>
+<td style="text-align: left;">1.329</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">748</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Transporte aéreo</td>
+<td style="text-align: left;">48.601</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0,000</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">329</td>
+<td style="text-align: left;">1.509</td>
+<td style="text-align: left;">1.838</td>
+<td style="text-align: left;">38.713</td>
+<td style="text-align: left;">8.051</td>
+<td style="text-align: left;">30.113</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Estacionamentos e pedágios</td>
+<td style="text-align: left;">1.359</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0,000</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">71</td>
+<td style="text-align: left;">71</td>
+<td style="text-align: left;">1.289</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">552</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hotéis e similares</td>
+<td style="text-align: left;">46.921</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0,000</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">3.252</td>
+<td style="text-align: left;">3.252</td>
+<td style="text-align: left;">22.140</td>
+<td style="text-align: left;">21.529</td>
+<td style="text-align: left;">10.330</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Serviços de alimentação</td>
+<td style="text-align: left;">55.716</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0,000</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">4.480</td>
+<td style="text-align: left;">758</td>
+<td style="text-align: left;">5.238</td>
+<td style="text-align: left;">34.662</td>
+<td style="text-align: left;">15.816</td>
+<td style="text-align: left;">18.327</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cinema</td>
+<td style="text-align: left;">57</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0,009</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">55</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">33</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Aluguel de imóveis</td>
+<td style="text-align: left;">624</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0,000</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">621</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">50</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Aluguel de veículos</td>
+<td style="text-align: left;">714</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0,000</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">58</td>
+<td style="text-align: left;">58</td>
+<td style="text-align: left;">656</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">248</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Agenciamento de viagens</td>
+<td style="text-align: left;">11.378</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0,000</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">685</td>
+<td style="text-align: left;">685</td>
+<td style="text-align: left;">10.694</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">3.475</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Artes, cultura, esporte e recreação</td>
+<td style="text-align: left;">3.018</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0,348</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">414</td>
+<td style="text-align: left;">414</td>
+<td style="text-align: left;">2.604</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">1.121</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Total</td>
+<td style="text-align: left;">197.504</td>
+<td style="text-align: left;">2.232</td>
+<td style="text-align: left;">-10</td>
+<td style="text-align: left;">0,357</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">8.759</td>
+<td style="text-align: left;">6.947</td>
+<td style="text-align: left;">15.706</td>
+<td style="text-align: left;">134.180</td>
+<td style="text-align: left;">45.396</td>
+<td style="text-align: left;">79.867</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="tabela-5" class="level2">
+<h2 class="anchored" data-anchor-id="tabela-5">Tabela 5</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>Tabela5 <span class="ot">&lt;-</span> <span class="fu">data.table</span>(Operação<span class="ot">=</span>VAB.nomes, <span class="st">`</span><span class="at">Valor (R$ milhões)</span><span class="st">`</span><span class="ot">=</span>VABT.m) <span class="sc">%&gt;%</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">format</span>(<span class="at">digits=</span><span class="dv">1</span>, <span class="at">big.mark =</span> <span class="st">"."</span>, <span class="at">decimal.mark =</span> <span class="st">","</span>)</span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(Tabela5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 73%">
+<col style="width: 26%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Operação</th>
+<th style="text-align: left;">Valor (R$ milhões)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Valor adicionado bruto ( PIB )</td>
+<td style="text-align: left;">54.314</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Remunerações</td>
+<td style="text-align: left;">32.843</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Salários</td>
+<td style="text-align: left;">27.175</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Contribuições sociais efetivas</td>
+<td style="text-align: left;">5.668</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Previdência oficial /FGTS</td>
+<td style="text-align: left;">5.510</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Previdência privada</td>
+<td style="text-align: left;">158</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Contribuições sociais imputadas</td>
+<td style="text-align: left;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Excedente operacional bruto e rendimento misto bruto</td>
+<td style="text-align: left;">20.050</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Rendimento misto bruto</td>
+<td style="text-align: left;">8.788</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Excedente operacional bruto (EOB)</td>
+<td style="text-align: left;">11.262</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Outros impostos sobre a produção</td>
+<td style="text-align: left;">1.507</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Outros subsídios à produção</td>
+<td style="text-align: left;">-86</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Valor da produção</td>
+<td style="text-align: left;">134.180</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Fator trabalho (ocupações)</td>
+<td style="text-align: left;">1.509</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="tabela-6" class="level2">
+<h2 class="anchored" data-anchor-id="tabela-6">Tabela 6</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>Tabela6 <span class="ot">&lt;-</span> </span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.table</span>(<span class="st">`</span><span class="at">Atividade turística</span><span class="st">`</span><span class="ot">=</span>A.nomes,</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>             <span class="st">`</span><span class="at">Valor Adicionado Bruto Direto do Turismo (VABDT / R$ milhões)</span><span class="st">`</span><span class="ot">=</span>VABT.j,</span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>             <span class="st">`</span><span class="at">Ocupações (milhares)</span><span class="st">`</span><span class="ot">=</span>VABT.jm[<span class="dv">14</span>,])[<span class="st">`</span><span class="at">Ocupações (milhares)</span><span class="st">`</span><span class="sc">&gt;</span><span class="dv">0</span>] <span class="sc">%&gt;%</span> </span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">format</span>(<span class="at">digits =</span> <span class="dv">1</span>, <span class="at">big.mark =</span> <span class="st">"."</span>, <span class="at">decimal.mark =</span> <span class="st">","</span>)</span>
+<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(Tabela6)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 52%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Atividade turística</th>
+<th style="text-align: left;">Valor Adicionado Bruto Direto do Turismo (VABDT / R$ milhões)</th>
+<th style="text-align: left;">Ocupações (milhares)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Combustível veicular</td>
+<td style="text-align: left;">688</td>
+<td style="text-align: left;">0,4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Transporte terrestre</td>
+<td style="text-align: left;">5.862</td>
+<td style="text-align: left;">144,6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Transporte aquaviário</td>
+<td style="text-align: left;">581</td>
+<td style="text-align: left;">3,0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Transporte aéreo</td>
+<td style="text-align: left;">8.600</td>
+<td style="text-align: left;">52,3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Estacionamentos e pedágios</td>
+<td style="text-align: left;">737</td>
+<td style="text-align: left;">7,5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hotéis e similares</td>
+<td style="text-align: left;">11.810</td>
+<td style="text-align: left;">349,5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Serviços de alimentação</td>
+<td style="text-align: left;">16.335</td>
+<td style="text-align: left;">703,7</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cinema</td>
+<td style="text-align: left;">21</td>
+<td style="text-align: left;">0,2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Aluguel de imóveis</td>
+<td style="text-align: left;">571</td>
+<td style="text-align: left;">0,5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Aluguel de veículos</td>
+<td style="text-align: left;">408</td>
+<td style="text-align: left;">4,0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Agenciamento de viagens</td>
+<td style="text-align: left;">7.218</td>
+<td style="text-align: left;">170,7</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Artes, cultura, esporte e recreação</td>
+<td style="text-align: left;">1.483</td>
+<td style="text-align: left;">72,4</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
