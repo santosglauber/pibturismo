@@ -1,3 +1,7 @@
+# Data files
+/dados-brutos/
+/rds/
+
 # History files
 .Rhistory
 .Rapp.history
