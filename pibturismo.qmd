@@ -1,8 +1,19 @@
 ---
 title: "PIB do turismo no Brasil: estimativas pelo método do quociente de participação do turismo"
-author: "[Glauber Eduardo de Oliveira Santos](https://linkfly.to/glaubersantos)"
 format: html
 editor: visual
+date: 2024-04-21
+author:
+  - name: [Glauber Eduardo de Oliveira Santos](https://linkfly.to/glaubersantos)
+    orcid: 0000-0001-8731-101X
+    email: glauber.santos@usp.br
+    affiliation: 
+      - name: Universidade de São Paulo
+        city: São Paulo
+        state: SP
+        country: Brasil
+license: "CC BY"
+funding: "O presente trabalho foi realizado com apoio do CNPq, Conselho Nacional de Desenvolvimento Científico  e Tecnológico – Brasil (Processo 308848/2021-7)."
 ---
 
 [Material complementar do artigo publicado na Revista Turismo em Análise]{.smallcaps}
