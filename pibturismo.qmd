@@ -4,7 +4,7 @@ format: html
 editor: visual
 date: 2024-04-21
 author:
-  - name: [Glauber Eduardo de Oliveira Santos](https://linkfly.to/glaubersantos)
+  - name: Glauber Eduardo de Oliveira Santos
     orcid: 0000-0001-8731-101X
     email: glauber.santos@usp.br
     affiliation: 
@@ -476,8 +476,13 @@ QPT.i[is.na(QPT.i)] <- 0
 
 Os QPT compõem a Tabela 1 do artigo.
 
+## Tabela 1
+
 ```{r}
-Tabela1 <- data.table(P.nomes, percent(QPT.i, accuracy=1))[QPT.i>0]
+Tabela1 <- data.table(
+  Produto=P.nomes,
+  `Quociente de Participação do Turismo (QPT)`=
+    percent(QPT.i, accuracy=1))[QPT.i>0]
 kable(Tabela1)
 ```
 
