@@ -1,8 +1,10 @@
 ---
 title: "PIB do turismo no Brasil: estimativas pelo método do quociente de participação do turismo"
+subtitle: "[Material complementar do artigo publicado na Revista Turismo em Análise (v. 34, 2023)](https://www.revistas.usp.br/rta/article/view/217156)."
+
 format: html
 editor: visual
-date: 2024-04-21
+date: 2024-04-30
 author:
   - name: Glauber Eduardo de Oliveira Santos
     orcid: 0000-0001-8731-101X
@@ -15,12 +17,6 @@ author:
 license: "CC BY"
 funding: "O presente trabalho foi realizado com apoio do CNPq, Conselho Nacional de Desenvolvimento Científico  e Tecnológico – Brasil (Processo 308848/2021-7)."
 ---
-
-[Material complementar do artigo publicado na Revista Turismo em Análise]{.smallcaps}
-
-[DOI]{.smallcaps}
-
-[Junho de 2024]{.smallcaps}
 
 O objetivo deste estudo é estimar as dimensões econômicas do turismo no Brasil. O trabalho se apoiou sobretudo em dados da [Pesquisa de Orçamentos Familiares 2017-2018 do IBGE](https://www.ibge.gov.br/estatisticas/sociais/populacao/24786-pesquisa-de-orcamentos-familiares-2.html) e adotou uma estratégia de estimação baseada no cômputo de Quocientes de Participação do Turismo (QPT), que correspondem à participação das despesas relacionadas às viagens turísticas no total de despesas das famílias com cada categoria de produtos. Esses quocientes foram aplicados sobre os dados do [Sistema de Contas Nacionais do IBGE](https://www.ibge.gov.br/estatisticas/economicas/industria/9052-sistema-de-contas-nacionais-brasil.html), assegurando a compatibilidade das estimativas com a contabilidade nacional oficial.
 
@@ -377,12 +373,13 @@ print(paste("prop.despesa.alim.aloj =",
 
 Embora a POF apresente dados bastante detalhados das despesas turísticas das famílias, as informações sobre os gastos com agenciamento de viagens não são diretamente compatíveis com as estatísticas da oferta. Ocorre que grande parte dos gastos realizados em agências de viagens não constituem receitas das agências, mas apenas intermediação de serviços turísticos. Sendo assim, torna-se necessário diferenciar os valores dos serviços das agências daqueles correspondentes aos serviços turísticos intermediados. Tal diferenciação foi feita a partir da conciliação de dados de oferta e demanda.
 
-Inicialmente, o valor da demanda total das agências de viagens no Brasil informado pela PAS (D.agencias) foi desagregado entre as parcelas devidas à demanda final das famílias (DF.agencias) e a demanda que corresponde ao consumo intermediário das empresas (CI.agencias). A diferença entre essa estimativa da demanda final das famílias e a despesa total das famílias em agências de viagens registrada pela POF constituiu nossa estimativa do valor dos serviços turísticos intermediados pelas agências para as família (DF.intermediado.agencias).
+Inicialmente, o valor da demanda total das agências de viagens no Brasil informado pela PAS (D.agencias) foi desagregado entre as parcelas devidas à demanda final das famílias (DF.agencias) e a demanda que corresponde ao consumo intermediário das empresas (CI.agencias). A diferença entre essa estimativa da demanda final das famílias e a despesa total das famílias em agências de viagens registrada pela POF constituiu nossa estimativa do valor dos serviços turísticos intermediados pelas agências para as famílias (DF.intermediado.agencias).
 
 ```{r}
 DF.agencias <- D.agencias * participacao.familias.D.agencias
 CI.agencias <- D.agencias - DF.agencias
 DF.intermediado.agencias <- CT.i.POF[tru.cod==78802, CT.i.POF] - DF.agencias
+print(paste("valor dos serviços turísticos intermediados pelas agências para as famílias =", VP))
 ```
 
 A distribuição do valor total dos serviços nacionais intermediados entre as categorias de serviços seguiu a descrição dos pacotes turísticos registrados pela POF. Essa lista consta no tradutor de produtos (tradutor.PI.i). A lista foi diferenciada para viagens nacionais e internacionais.
@@ -535,6 +532,7 @@ A soma do consumo turístico das famílias (CF.i) com as exportações turístic
 DFT.i <- CT.i + XT.i
 DTT.i <- DFT.i + CIT.i
 DTT <- sum(DTT.i, na.rm=T)
+print(paste("DTT =", DTT))
 ```
 
 # Outros agregados macroeconômicos
@@ -553,6 +551,8 @@ MGTT <- sum(MGTT.i, na.rm=T)
 IPT.ik <- IP.ik * PROPT.i
 IPT.i <- rowSums(IPT.ik)
 IPT <- sum(IPT.ik, na.rm=T)
+
+print(paste("IPT =", IPT))
 ```
 
 O valor da produção turística por categoria de produtos corresponde à demanda total subtraída das margens do comércio e transporte, dos impostos sobre produtos, e das importações.
@@ -560,6 +560,7 @@ O valor da produção turística por categoria de produtos corresponde à demand
 ```{r}
 VPT.i <- DTT.i - MGCT.i - MGTT.i - IPT.i - MT.i
 VPT <- sum(VPT.i, na.rm=T)
+print(paste("VPT =", VPT))
 ```
 
 Este trabalho assume o pressuposto de identidade entre produtos e atividades turísticas. A justificativa disto é detalhada no artigo publicado na RTA. Desta forma, o valor da produção de cada categoria de produto conduz diretamente à estimativa do valor da produção por atividade.
@@ -574,6 +575,7 @@ A estrutura de consumo intermediário das atividades econômicas adotada para a 
 ```{r}
 CIPT.j <- (CI.j / VP.j) * VPT.j
 CIPT <- sum(CIPT.j, na.rm=T)
+print(paste("CIPT =", CIPT))
 ```
 
 O valor adicionado bruto das atividades turísticas (VABT.j) é a diferença entre o valor da produção turística (VPT.j) e o valor do consumo intermediário da produção turística (CIPT.j).
@@ -581,6 +583,7 @@ O valor adicionado bruto das atividades turísticas (VABT.j) é a diferença ent
 ```{r}
 VABT.j <- VPT.j - CIPT.j
 VABT <- VPT - CIPT
+print(paste("VABT =", VABT))
 ```
 
 A participação dos compomentes do total do valor adicionado foi utilizada para estimar a parcela devida ao turismo em cada elemento.
